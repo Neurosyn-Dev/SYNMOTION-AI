@@ -1,0 +1,6 @@
+{
+  "name": "SYNMOTION AI",
+  "description": "Autonomous AI-powered film production studio and procedural animation platform. Turn one prompt into complete multi-scene films with AI Director, Visual DNA, 3D/2D animation, and multitrack editing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

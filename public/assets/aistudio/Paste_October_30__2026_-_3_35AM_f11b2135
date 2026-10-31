@@ -1,0 +1,1322 @@
+# SYNMOTION AI
+
+## Imagine It. Direct It. Watch It Come Alive.
+
+Build **SYNMOTION AI**, an ambitious, production-oriented AI filmmaking and animation platform.
+
+This is not simply a video generator. It is an autonomous AI-powered film production studio capable of turning a single natural-language prompt into a complete, multi-scene, professionally assembled video.
+
+The central idea is simple:
+
+**The user describes what they want to create. SYNMOTION handles the production.**
+
+The user should not have to manually divide a story into individual prompts, generate every scene separately, download clips, organize footage, or stitch everything together.
+
+The system should function as an AI screenwriter, director, storyboard artist, cinematographer, animator, visual effects artist, sound designer, editor, and production coordinator.
+
+The application must support both generative AI video production and conventional procedural animation, allowing the two approaches to work together.
+
+Do not build a superficial dashboard or a collection of nonfunctional buttons. Build a real application with a functional architecture, actual integrations, persistent projects, and a production workflow that can be extended over time.
+
+---
+
+# 1. THE CORE EXPERIENCE: ONE PROMPT TO A COMPLETE FILM
+
+The primary interface should allow users to enter one comprehensive natural-language prompt describing an entire production.
+
+Example:
+
+"Create a cinematic five-minute short film about a mysterious hooded character walking through an abandoned city during a thunderstorm. Begin with distant establishing shots, gradually introduce the character, follow their journey through the city, build emotional tension, and finish with a dramatic cinematic sequence. Use dark atmospheric lighting, realistic rain, detailed environments, emotional orchestral music, and cinematic camera movement."
+
+The user selects the desired production duration and clicks CREATE.
+
+SYNMOTION must automatically:
+
+1. Interpret the creative brief.
+2. Identify the genre, story, tone, visual style, and narrative structure.
+3. Generate a screenplay or structured narrative.
+4. Identify characters, environments, objects, and important visual elements.
+5. Generate a production bible.
+6. Create a storyboard.
+7. Divide the production into appropriately sized scenes and shots.
+8. Determine which scenes require generative video, procedural animation, or a combination.
+9. Generate necessary visual assets.
+10. Generate or animate individual scenes.
+11. Maintain character and environmental continuity.
+12. Evaluate generated footage.
+13. Retry failed or unsuitable scenes.
+14. Generate or incorporate audio.
+15. Automatically assemble the production.
+16. Synchronize footage, dialogue, music, and sound effects.
+17. Render the complete production.
+18. Present the finished video for playback and editing.
+
+The entire process must be autonomous after the user initiates production, except when user input is genuinely required.
+
+The user should be able to leave the application and return later without losing production progress.
+
+## Duration Support
+
+Provide configurable production durations:
+
+* 30 seconds
+* 1 minute
+* 3 minutes
+* 5 minutes
+* 10 minutes
+* 15 minutes
+* 30 minutes
+* Custom duration
+
+Five minutes must be a supported production target, not an artificial limit.
+
+The system must understand that the requested duration refers to the complete assembled production, not an individual video-generation API request.
+
+Automatically calculate the required scene count, shot durations, generation workload, and estimated production requirements.
+
+Never silently produce a shorter video than requested.
+
+If a provider's limitations, generation failures, or resource constraints prevent the requested duration, clearly communicate the shortfall and provide recovery options.
+
+---
+
+# 2. AI DIRECTOR
+
+Create an intelligent AI Director powered by Gemini or another compatible reasoning model.
+
+The AI Director is responsible for orchestrating the entire production.
+
+It should understand:
+
+* Screenwriting.
+* Narrative structure.
+* Scene composition.
+* Cinematography.
+* Camera movement.
+* Character direction.
+* Animation.
+* Visual storytelling.
+* Lighting.
+* Color grading.
+* Visual effects.
+* Audio production.
+* Editing.
+* Continuity.
+
+The AI Director must make creative decisions autonomously while respecting the user's original instructions.
+
+It should determine when to use:
+
+* AI-generated video.
+* AI-generated images.
+* Image-to-video animation.
+* Video-to-video transformation where supported.
+* Procedural 2D animation.
+* Procedural 3D animation.
+* Three.js scenes.
+* Character animation.
+* Visual effects.
+* Hybrid combinations of these techniques.
+
+Do not force every scene through a generative video model.
+
+Use the most appropriate production method for each scene.
+
+The AI Director must maintain a structured production plan that can be inspected, modified, resumed, and revised.
+
+---
+
+# 3. STORYBOARD AND SCENE GENERATION
+
+Create an intelligent storyboard generator.
+
+Automatically transform the user's prompt into a complete visual production plan.
+
+Each scene should contain:
+
+* Scene number.
+* Scene title.
+* Narrative purpose.
+* Scene description.
+* Estimated duration.
+* Characters.
+* Environment.
+* Camera angle.
+* Camera movement.
+* Lighting.
+* Visual style.
+* Required assets.
+* Audio requirements.
+* Generation method.
+* Reference images.
+* Reference videos.
+* Continuity requirements.
+
+Break scenes into individual shots when necessary.
+
+Determine appropriate shot durations dynamically rather than using arbitrary fixed-length clips.
+
+The storyboard must be editable before production begins.
+
+Allow users to regenerate individual storyboard scenes without restarting the entire project.
+
+Provide storyboard thumbnails and visual previews.
+
+---
+
+# 4. IMAGE REFERENCE SYSTEM
+
+Image references must be a core component of SYNMOTION, not merely an upload feature.
+
+Users must be able to upload multiple images to influence the appearance, composition, characters, environments, objects, lighting, and overall aesthetic of an entire production.
+
+## Reference Categories
+
+Support:
+
+* Character references.
+* Environment references.
+* Clothing references.
+* Object and prop references.
+* Visual style references.
+* Composition references.
+* Lighting references.
+* Color palette references.
+* Scene references.
+* First-frame references.
+* Last-frame references.
+* Concept art.
+* Custom reference categories.
+
+Users can manually assign categories or allow Gemini to analyze and recommend appropriate categories.
+
+## AI Image Analysis
+
+Use multimodal AI capabilities to analyze uploaded images.
+
+Extract relevant visual characteristics, including:
+
+* Character appearance.
+* Clothing and accessories.
+* Environmental characteristics.
+* Architectural details.
+* Color palettes.
+* Lighting conditions.
+* Camera composition.
+* Artistic style.
+* Important objects.
+* Spatial relationships.
+
+Generate structured descriptions that can be reused throughout the production.
+
+## Image-to-Video
+
+Support image-to-video generation through compatible providers.
+
+Users should be able to upload an image and describe how it should move.
+
+Example:
+
+Upload an image of a hooded character standing in the rain.
+
+Prompt:
+
+"Animate the character slowly walking forward. Rain falls continuously. The camera gradually moves closer. Preserve the original clothing, silhouette, and overall visual appearance."
+
+The system should use a compatible video-generation model to produce the animated scene.
+
+Where supported, allow:
+
+* First-frame conditioning.
+* Last-frame conditioning.
+* Multiple image references.
+* Character references.
+* Environment references.
+* Style references.
+* Reference-guided generation.
+* Image-based scene continuation.
+
+Never silently discard uploaded references.
+
+If a provider does not support a requested reference capability, use an appropriate alternative or clearly explain the limitation.
+
+---
+
+# 5. VIDEO REFERENCE SYSTEM
+
+Implement a comprehensive video-reference system.
+
+Users must be able to upload existing videos and use them as creative references for new productions.
+
+Video references are not necessarily footage that should appear in the final production. They may serve as examples of how the user wants something to look, move, feel, or be filmed.
+
+The system must distinguish between:
+
+1. Videos used as visual inspiration.
+2. Videos used as motion references.
+3. Videos used as camera and cinematography references.
+4. Videos used as source footage for editing or transformation.
+5. Videos used as starting points for continuation.
+6. Videos used as scene or environmental references.
+
+## Video Reference Analysis
+
+Use compatible multimodal models and video-processing tools to analyze uploaded reference videos.
+
+Extract:
+
+* Scene composition.
+* Camera angles.
+* Camera movement.
+* Shot transitions.
+* Movement patterns.
+* Character actions.
+* Character positioning.
+* Environmental movement.
+* Lighting.
+* Color grading.
+* Visual style.
+* Editing rhythm.
+* Pacing.
+* Approximate shot durations.
+* Motion characteristics.
+* Atmospheric elements.
+
+Where necessary, extract representative frames and analyze them individually.
+
+Generate a structured video-reference profile.
+
+Do not assume that every video model can accept an entire reference video directly. Use frame extraction, descriptions, embeddings, or other appropriate intermediate representations when necessary.
+
+## Video Reference Categories
+
+Allow users to assign videos to categories:
+
+* Cinematography reference.
+* Camera movement reference.
+* Character movement reference.
+* Dance or choreography reference.
+* Action sequence reference.
+* Fight choreography reference.
+* Environmental movement reference.
+* Animation style reference.
+* Editing and transition reference.
+* Lighting reference.
+* Color grading reference.
+* Scene composition reference.
+* Narrative inspiration.
+* Source footage.
+* Continuation reference.
+* Custom reference.
+
+## Motion Reference Understanding
+
+The AI Director must understand the difference between copying a video's appearance and reproducing its movement characteristics.
+
+For example:
+
+A user uploads a video showing a person walking toward a camera.
+
+They instruct:
+
+"Use this as a movement reference for my character, but maintain the character's appearance from my uploaded character image."
+
+SYNMOTION should understand that:
+
+* The character image determines appearance.
+* The video determines movement.
+* The user's prompt determines the creative direction.
+* The generation engine combines the relevant information using supported capabilities.
+
+## Camera Reference Understanding
+
+Users should be able to upload a video and say:
+
+"Use the same slow camera push-in, framing, and cinematic pacing throughout this scene."
+
+The AI should extract the relevant cinematographic characteristics and use them to guide scene generation.
+
+## Source Footage and Video Transformation
+
+Where compatible providers support it, allow users to:
+
+* Transform existing footage.
+* Animate or stylize source footage.
+* Extend an existing video.
+* Continue an existing scene.
+* Use footage as a generation reference.
+* Generate alternative versions.
+* Incorporate user-provided footage into the final timeline.
+
+Preserve the original uploaded footage.
+
+Never modify or overwrite original source assets.
+
+## Reference Management
+
+Users must be able to:
+
+* Upload multiple reference videos.
+* Preview them.
+* Assign categories.
+* Add descriptions.
+* Select relevant sections.
+* Associate references with individual scenes.
+* Apply references globally.
+* Remove or replace references.
+* View which scenes use each reference.
+
+The AI Director must automatically associate relevant references with storyboard scenes while allowing manual overrides.
+
+Respect applicable copyright, consent, and provider restrictions. Do not assume uploaded reference material grants permission to reproduce protected material or impersonate real people.
+
+---
+
+# 6. VISUAL DNA: PERSISTENT VISUAL IDENTITY
+
+Implement a system called **VISUAL DNA**.
+
+This is one of the most important features of SYNMOTION.
+
+Visual DNA creates persistent, reusable visual identity profiles from uploaded references, generated assets, and user-defined descriptions.
+
+Its purpose is to maintain recognizable visual consistency across scenes, productions, and entirely different projects.
+
+## Character DNA
+
+Create reusable character profiles containing:
+
+* Character reference images.
+* Visual descriptions.
+* Facial characteristics where appropriate.
+* Body proportions.
+* Clothing.
+* Accessories.
+* Hairstyle.
+* Silhouette.
+* Color palette.
+* Distinguishing visual features.
+* Animation characteristics.
+* Associated reference videos.
+* Movement descriptions.
+
+Users should be able to save characters to their personal asset library.
+
+## Environment DNA
+
+Create reusable environmental profiles containing:
+
+* Location references.
+* Architectural characteristics.
+* Environmental details.
+* Color palette.
+* Lighting.
+* Atmosphere.
+* Weather.
+* Spatial characteristics.
+* Associated visual references.
+
+## Style DNA
+
+Create reusable visual-style profiles containing:
+
+* Artistic direction.
+* Color grading.
+* Contrast.
+* Lighting characteristics.
+* Texture.
+* Rendering style.
+* Cinematographic characteristics.
+* Reference images.
+* Reference videos.
+
+## Motion DNA
+
+Create reusable motion profiles containing:
+
+* Walking styles.
+* Running styles.
+* Gestures.
+* Body movement.
+* Dance movements.
+* Camera movements.
+* Animation timing.
+* Motion characteristics.
+
+Use video references where available.
+
+## Object DNA
+
+Maintain reusable descriptions and visual references for important props, objects, vehicles, and other recurring assets.
+
+## Global and Project-Specific DNA
+
+Allow Visual DNA profiles to be:
+
+* Global across the user's account.
+* Specific to an individual project.
+* Specific to a character.
+* Specific to an environment.
+* Specific to a production style.
+
+Users must be able to reuse the same character, environment, visual style, and motion profile across completely different productions.
+
+For example:
+
+A user creates a character profile once, saves it, and later creates five different films featuring the same character.
+
+SYNMOTION should retrieve the appropriate Visual DNA profiles automatically.
+
+## Visual DNA Consistency Engine
+
+Before generating a scene, retrieve relevant Visual DNA profiles and references.
+
+After generation, evaluate whether the resulting scene appears consistent with the established profiles.
+
+Where practical, flag inconsistencies such as:
+
+* Clothing changes.
+* Character appearance changes.
+* Incorrect accessories.
+* Different environmental characteristics.
+* Unexpected color grading.
+* Inconsistent lighting.
+* Incorrect movement characteristics.
+
+Allow users to regenerate affected scenes.
+
+Do not promise perfect visual identity preservation when the underlying generation provider cannot guarantee it.
+
+Use available reference-conditioning techniques, repeated descriptions, reference frames, and other compatible approaches to improve consistency.
+
+---
+
+# 7. PRODUCTION BIBLE AND CONTINUITY ENGINE
+
+Generate a persistent production bible for every project.
+
+The production bible should contain:
+
+* Story information.
+* Character profiles.
+* Character relationships.
+* Environment descriptions.
+* Visual DNA references.
+* Clothing details.
+* Important objects.
+* Lighting direction.
+* Color palette.
+* Cinematographic style.
+* Narrative timeline.
+* Scene order.
+* Continuity requirements.
+* Audio direction.
+
+Every scene must reference the relevant production bible entries.
+
+The continuity engine must ensure that the AI Director has access to the correct visual information when generating new scenes.
+
+Use reference images, reference videos, previous frames, and structured descriptions where supported.
+
+---
+
+# 8. VIDEO GENERATION ENGINE
+
+Implement a model-independent video-generation architecture.
+
+The application must not be permanently dependent on a single video provider.
+
+Create provider adapters for compatible services, including:
+
+* Google Veo.
+* Additional commercial video-generation providers.
+* Future video-generation APIs.
+* Compatible image-to-video models.
+* Compatible video transformation models.
+
+The exact providers and capabilities should be configurable.
+
+Support capabilities where available:
+
+* Text-to-video.
+* Image-to-video.
+* Reference-guided video generation.
+* First-frame conditioning.
+* Last-frame conditioning.
+* Character references.
+* Environment references.
+* Video continuation.
+* Scene extensions.
+* Camera movement instructions.
+* Multiple variations.
+
+Do not assume that every provider supports every capability.
+
+Each adapter must expose its actual supported features.
+
+## Generation Orchestration
+
+The generation engine must:
+
+* Receive scene instructions from the AI Director.
+* Retrieve relevant references.
+* Select an appropriate provider.
+* Submit generation jobs.
+* Track generation status.
+* Retrieve completed assets.
+* Validate output files.
+* Store generated media.
+* Retry failures.
+* Notify the production coordinator.
+
+Never expose private API keys in frontend code.
+
+All provider credentials must be handled securely on the server.
+
+---
+
+# 9. 3D ANIMATION STUDIO
+
+Implement a genuine procedural 3D animation environment using Three.js and WebGL.
+
+This allows SYNMOTION to create animated scenes without depending entirely on external video-generation APIs.
+
+Support:
+
+* 3D environments.
+* Procedural geometry.
+* Materials and textures.
+* Lighting.
+* Shadows.
+* Cameras.
+* Camera animation.
+* Particles.
+* Atmospheric effects.
+* Rain.
+* Snow.
+* Fog.
+* Smoke.
+* Fire.
+* Water effects.
+* Physics where appropriate.
+* Animated objects.
+* Character rigs where available.
+* Motion paths.
+* Scene transitions.
+
+The AI Director should be able to describe a scene and have the system construct the corresponding 3D environment.
+
+Provide a visual editor for users who want direct control.
+
+## Camera System
+
+Support:
+
+* Static shots.
+* Dolly movements.
+* Tracking shots.
+* Crane movements.
+* Orbit movements.
+* Zooms.
+* Push-ins.
+* Pull-outs.
+* Pan and tilt.
+* Handheld-style motion.
+* Cinematic depth of field.
+
+Allow the AI Director to automatically choose appropriate camera behavior.
+
+---
+
+# 10. 2D ANIMATION STUDIO
+
+Implement a 2D animation environment.
+
+Support:
+
+* Layer-based animation.
+* Keyframes.
+* Motion paths.
+* Character movement.
+* Background animation.
+* Parallax.
+* Particle effects.
+* Typography animation.
+* Camera movement.
+* Scene transitions.
+* Animated illustrations.
+
+Allow the AI Director to generate 2D scenes when they are more appropriate than photorealistic video.
+
+---
+
+# 11. CHARACTER LAB
+
+Create a dedicated character creation and management workspace.
+
+Users should be able to:
+
+* Upload character references.
+* Create character profiles.
+* Generate concept images.
+* Create character variations.
+* Assign Visual DNA.
+* Save character profiles.
+* Reuse characters across projects.
+* Define character movement.
+* Associate motion references.
+* Preview character animations.
+
+Characters should be accessible from the storyboard, animation studio, and video-generation workflow.
+
+---
+
+# 12. AUDIO PRODUCTION STUDIO
+
+Create a dedicated audio workspace.
+
+Support:
+
+* Dialogue.
+* AI-generated voice.
+* Voiceover.
+* Narration.
+* Background music.
+* Sound effects.
+* Environmental audio.
+* Ambient soundscapes.
+* Audio synchronization.
+* Volume automation.
+* Audio mixing.
+* Fade-in and fade-out.
+* Audio normalization.
+* Multitrack editing.
+
+The AI Director should identify audio requirements for each scene.
+
+Automatically generate or retrieve appropriate sound effects and environmental audio.
+
+Allow users to upload their own music, dialogue, and sound effects.
+
+Provide a multitrack audio editor.
+
+Keep audio and video synchronization accurate throughout editing and rendering.
+
+---
+
+# 13. AUTONOMOUS PRODUCTION ORCHESTRATOR
+
+This is the operational backbone of SYNMOTION.
+
+The production orchestrator must manage the entire production process.
+
+Do not rely on a browser session remaining open.
+
+Implement persistent background jobs and server-side orchestration.
+
+## Scene Status System
+
+Each scene should have an explicit status:
+
+* PENDING.
+* PLANNING.
+* GENERATING.
+* PROCESSING.
+* QUALITY_CHECK.
+* RETRYING.
+* COMPLETED.
+* FAILED.
+
+The production dashboard must display actual backend status.
+
+Never simulate progress with fabricated percentages.
+
+## Background Processing
+
+Support:
+
+* Persistent generation jobs.
+* Job queues.
+* Worker processes.
+* Retry policies.
+* Checkpoints.
+* Resume after interruption.
+* Cancellation.
+* Generation history.
+* Asset validation.
+* Error reporting.
+
+If the user closes their browser, production must continue whenever the configured backend infrastructure supports persistent execution.
+
+If a production fails, resume from the last successful checkpoint rather than restarting everything.
+
+## Quality Control
+
+Evaluate generated scenes for:
+
+* Missing footage.
+* Corrupted files.
+* Incorrect duration.
+* Invalid media.
+* Major visual inconsistencies.
+* Missing audio.
+* Unexpected black frames.
+* Inappropriate scene transitions.
+* Reference mismatches where detectable.
+
+Flag problematic scenes and attempt recovery.
+
+Do not automatically accept obviously incomplete or invalid assets.
+
+---
+
+# 14. AUTOMATIC VIDEO ASSEMBLY AND RENDERING
+
+Use FFmpeg or an equivalent server-side media-processing solution.
+
+Automatically assemble completed scenes into a finished production.
+
+Support:
+
+* Scene ordering.
+* Trimming.
+* Clip transitions.
+* Crossfades.
+* Audio synchronization.
+* Music placement.
+* Sound effect placement.
+* Dialogue mixing.
+* Audio normalization.
+* Color adjustments.
+* Video encoding.
+* Frame-rate configuration.
+* Resolution configuration.
+* Final rendering.
+
+Provide export options such as:
+
+* MP4.
+* 720p.
+* 1080p.
+* 4K where source material and infrastructure support it.
+
+Do not silently stretch or loop footage to reach a requested duration.
+
+Generate additional footage or use appropriate procedural animation when more runtime is needed.
+
+Provide a clear rendering progress indicator based on actual processing status.
+
+Allow users to preview the final production before export.
+
+---
+
+# 15. DIRECTOR'S CUT MODE
+
+Implement an advanced natural-language revision system called **DIRECTOR'S CUT**.
+
+This feature allows users to revise an existing completed production through ordinary language.
+
+The user should not need to manually locate every scene or repeat the original production prompt.
+
+Example instructions:
+
+"Make the entire film darker and more cinematic."
+
+"Change the lighting in the second half."
+
+"Make the main character's movements slower."
+
+"Replace the final scene with a dramatic aerial shot."
+
+"Add more rain throughout the production."
+
+"Change the music to something more emotional."
+
+"Make the camera movement smoother."
+
+"Extend the opening scene by ten seconds."
+
+"Use the new character reference in every scene."
+
+"Make the environment match the new uploaded image."
+
+The AI Director must interpret the requested change, identify affected scenes and assets, and determine the minimum necessary regeneration work.
+
+## Intelligent Change Detection
+
+Do not regenerate the entire film when only one scene needs modification.
+
+Determine:
+
+* Which scenes are affected.
+* Which assets require modification.
+* Which reference profiles must be updated.
+* Whether audio needs adjustment.
+* Whether scene timing changes.
+* Whether downstream transitions need modification.
+
+Preserve unaffected scenes.
+
+## Version Control
+
+Maintain production versions.
+
+Allow users to:
+
+* Save a new cut.
+* Compare versions.
+* Restore previous versions.
+* Preview changes.
+* View revision history.
+* Identify modified scenes.
+* Undo revisions.
+
+Never overwrite the original production without preserving a recoverable version.
+
+---
+
+# 16. MULTITRACK TIMELINE EDITOR
+
+Build a functional timeline editor.
+
+Support:
+
+* Multiple video tracks.
+* Multiple audio tracks.
+* Scene clips.
+* Transitions.
+* Overlays.
+* Text.
+* Titles.
+* Effects.
+* Keyframes.
+* Trimming.
+* Splitting.
+* Moving clips.
+* Audio synchronization.
+* Timeline zoom.
+* Playback.
+* Scene replacement.
+
+The AI Director should be able to make timeline edits based on natural-language instructions.
+
+Users should also be able to edit manually.
+
+Changes must be reflected in the production project and final render.
+
+---
+
+# 17. PROJECT AND ASSET LIBRARY
+
+Implement persistent project storage.
+
+Each project should retain:
+
+* Original prompt.
+* Production brief.
+* Storyboard.
+* Production bible.
+* Visual DNA profiles.
+* Image references.
+* Video references.
+* Generated images.
+* Generated video clips.
+* Audio assets.
+* Scene metadata.
+* Timeline.
+* Production versions.
+* Exported videos.
+* Generation history.
+
+Create a reusable asset library.
+
+Users must be able to reuse assets across different projects.
+
+Use appropriate storage infrastructure for large media files.
+
+---
+
+# 18. USER INTERFACE AND VISUAL DESIGN
+
+The application must feel like a premium creative production suite.
+
+Avoid generic AI dashboard styling.
+
+## Design Direction
+
+Use an immersive, sophisticated liquid-glass aesthetic.
+
+Visual characteristics:
+
+* Deep near-black backgrounds.
+* Restrained navy-blue ambient lighting.
+* Translucent glass surfaces.
+* Subtle reflections.
+* Layered depth.
+* Refined silver highlights.
+* Carefully controlled gradients.
+* Premium typography.
+* Smooth micro-interactions.
+* Elegant transitions.
+* Clear visual hierarchy.
+
+The interface should feel like a combination of a professional film studio, advanced creative workstation, and futuristic AI command center.
+
+Avoid excessive visual clutter.
+
+Do not use oversized decorative blobs or distracting animated backgrounds.
+
+## Main Navigation
+
+Organize the application around:
+
+1. CREATE.
+2. STORYBOARD.
+3. VIDEO STUDIO.
+4. 3D STUDIO.
+5. CHARACTER LAB.
+6. AUDIO STUDIO.
+7. TIMELINE.
+8. DIRECTOR'S CUT.
+9. VISUAL DNA.
+10. REFERENCE LIBRARY.
+11. ASSET LIBRARY.
+12. PROJECTS.
+13. SETTINGS.
+
+## Main Create Screen
+
+The primary creation screen should feature:
+
+* Large natural-language prompt editor.
+* Image reference upload.
+* Video reference upload.
+* Reference library access.
+* Visual DNA selection.
+* Production duration.
+* Output quality.
+* Generation provider settings.
+* Create button.
+
+Keep the main creation workflow simple.
+
+Advanced configuration should be available without overwhelming the initial experience.
+
+## Production Monitor
+
+Display:
+
+* Overall production status.
+* Current production phase.
+* Scene generation status.
+* Completed scenes.
+* Failed scenes.
+* Retry activity.
+* Rendering status.
+* Estimated remaining work where calculable.
+* Provider usage.
+* Resource consumption.
+* Actual generation costs where available.
+
+Never display fabricated cost estimates or fake progress.
+
+---
+
+# 19. TECHNICAL ARCHITECTURE
+
+Use a modular, extensible architecture.
+
+## Frontend
+
+Preferred technologies:
+
+* React.
+* TypeScript.
+* Vite.
+* Tailwind CSS.
+* Three.js.
+* WebGL.
+* Framer Motion.
+
+Use reusable components and a clear application structure.
+
+## Backend
+
+Implement a secure backend responsible for:
+
+* AI orchestration.
+* Provider integrations.
+* Background jobs.
+* Media processing.
+* Project persistence.
+* Reference management.
+* Authentication.
+* Asset management.
+* Generation history.
+
+## Database and Storage
+
+Use Supabase where appropriate for:
+
+* Authentication.
+* Project metadata.
+* Scene metadata.
+* Production state.
+* Visual DNA profiles.
+* Reference metadata.
+* Asset records.
+* Version history.
+
+Use Cloudflare R2 or an equivalent object-storage service for large media assets.
+
+Do not store large video files directly in database records.
+
+## Media Processing
+
+Use FFmpeg or an equivalent processing solution for:
+
+* Video assembly.
+* Encoding.
+* Audio mixing.
+* Transitions.
+* Trimming.
+* Rendering.
+* Frame extraction.
+* Video reference analysis.
+
+## Background Workers
+
+Use persistent server-side workers and job queues.
+
+Do not assume Google AI Studio itself provides unrestricted persistent background execution or FFmpeg processing.
+
+Design the application so that its backend can be deployed to appropriate infrastructure.
+
+## AI Integrations
+
+Use Gemini for reasoning, multimodal analysis, planning, and orchestration where appropriate.
+
+Use compatible image and video-generation providers for actual media generation.
+
+Keep integrations modular.
+
+The system must be able to accommodate additional providers without redesigning the entire application.
+
+## API Security
+
+* Never expose private API keys in frontend code.
+* Store credentials securely.
+* Use server-side API calls.
+* Validate user inputs.
+* Implement appropriate authentication and authorization.
+* Protect uploaded media.
+* Implement reasonable resource limits.
+* Handle provider errors safely.
+
+---
+
+# 20. SETTINGS AND PROVIDER MANAGEMENT
+
+Create a settings interface where users can configure:
+
+* AI provider.
+* Video-generation provider.
+* Image-generation provider.
+* Audio provider.
+* Model selection.
+* API credentials.
+* Default resolution.
+* Default frame rate.
+* Default generation quality.
+* Storage preferences.
+* Production behavior.
+* Retry configuration.
+
+Display which capabilities are supported by each configured provider.
+
+Do not present unsupported features as available.
+
+---
+
+# 21. DEVELOPMENT AND IMPLEMENTATION REQUIREMENTS
+
+Do not attempt to create every advanced feature as a superficial placeholder.
+
+Build the application progressively while maintaining a working foundation.
+
+## Phase 1: Core Foundation
+
+Implement:
+
+* Application architecture.
+* Premium interface.
+* Authentication.
+* Project management.
+* Prompt submission.
+* Gemini integration.
+* AI Director.
+* Storyboard generation.
+* Scene decomposition.
+* Image reference uploads.
+* Video reference uploads.
+* Reference analysis.
+* Visual DNA foundations.
+* Persistent project storage.
+
+## Phase 2: Generative Video Production
+
+Implement:
+
+* Video provider adapters.
+* Generation orchestration.
+* Image-to-video.
+* Reference-guided generation.
+* Scene generation.
+* Scene status tracking.
+* Retry handling.
+* Persistent jobs.
+
+## Phase 3: Animation Systems
+
+Implement:
+
+* Three.js 3D studio.
+* Procedural animation.
+* 2D animation.
+* Character Lab.
+* Environment generation.
+* Camera systems.
+* Visual effects.
+
+## Phase 4: Postproduction
+
+Implement:
+
+* Audio studio.
+* Timeline editor.
+* FFmpeg integration.
+* Automatic assembly.
+* Transitions.
+* Audio synchronization.
+* Rendering.
+* Export.
+
+## Phase 5: Advanced Creative Control
+
+Implement:
+
+* Director's Cut.
+* Visual DNA expansion.
+* Advanced continuity checking.
+* Reference-aware regeneration.
+* Production versioning.
+* Intelligent scene revision.
+* Cross-project asset reuse.
+
+Features should be introduced in a way that preserves architectural compatibility with later phases.
+
+---
+
+# 22. TESTING AND VERIFICATION
+
+Testing is mandatory.
+
+Verify:
+
+* Prompt submission.
+* AI Director responses.
+* Storyboard generation.
+* Scene decomposition.
+* Image uploads.
+* Video uploads.
+* Image analysis.
+* Video analysis.
+* Visual DNA persistence.
+* Reference associations.
+* Provider integration.
+* Generation job tracking.
+* Retry behavior.
+* Project persistence.
+* Browser interruption recovery.
+* Scene assembly.
+* Audio synchronization.
+* Timeline editing.
+* Rendering.
+* Export.
+* Director's Cut revisions.
+* Version restoration.
+
+Test actual backend functionality.
+
+Do not consider a feature complete merely because its interface exists.
+
+Do not use fabricated generation results, simulated provider responses, or fake progress indicators as substitutes for real functionality.
+
+When an external API requires credentials, clearly identify the configuration requirement.
+
+Distinguish between:
+
+* Fully implemented and tested.
+* Implemented but awaiting credentials.
+* Partially implemented.
+* Planned for a later phase.
+
+Maintain a clear development status.
+
+---
+
+# 23. FINAL PRODUCT OBJECTIVE
+
+SYNMOTION AI must ultimately deliver this experience:
+
+A user opens the application.
+
+They enter one detailed prompt.
+
+They upload character images, environment images, style references, and example videos.
+
+They select a five-minute production.
+
+They click CREATE.
+
+The AI Director understands the entire creative brief.
+
+It analyzes all references.
+
+It builds Visual DNA profiles.
+
+It develops the screenplay.
+
+It creates the storyboard.
+
+It organizes the production into scenes.
+
+It generates and animates the footage.
+
+It maintains continuity.
+
+It checks the results.
+
+It retries problematic scenes.
+
+It generates or incorporates audio.
+
+It assembles the complete production.
+
+It renders the final video.
+
+The user watches the finished film.
+
+Then they can say:
+
+"Make it darker, change the ending, use the new character reference, and slow down the camera movement."
+
+The AI Director understands the changes and revises only the affected parts of the production.
+
+**The ultimate goal is to make professional creative production accessible through natural language.**
+
+The user should be able to focus on imagination and creative direction rather than the technical complexity of filmmaking.
+
+SYNMOTION should handle the production.
+
+**Imagine It. Direct It. Watch It Come Alive.**
