@@ -17,6 +17,7 @@ import { CharacterLabWorkstation } from './components/workstations/CharacterLabW
 import { AudioStudioWorkstation } from './components/workstations/AudioStudioWorkstation';
 import { SettingsWorkstation } from './components/workstations/SettingsWorkstation';
 import { ExportModal } from './components/modals/ExportModal';
+import { initialProject } from './backend/db/seedData';
 
 import {
   Sparkles,
@@ -76,7 +77,9 @@ export default function App() {
         }
       })
       .catch((err) => {
-        console.error('Failed to load project from server:', err);
+        console.warn('Backend unavailable; loading the bundled SYNMOTION demo project.', err);
+        setProject(initialProject);
+        setActiveScene(initialProject.storyboard[0] || null);
       });
   }, []);
 
