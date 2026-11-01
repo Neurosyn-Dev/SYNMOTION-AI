@@ -1,0 +1,1903 @@
+# SYNMOTION AI
+
+## THE ULTIMATE AI-POWERED 3D ANIMATION, CINEMATIC PRODUCTION & FILMMAKING STUDIO
+
+**MASTER DEVELOPMENT DIRECTIVE**
+
+**PRODUCT VISION:** BLENDER MEETS UNREAL ENGINE MEETS AN AI FILM DIRECTOR.
+
+**TAGLINE:** Imagine It. Direct It. Watch It Come Alive.
+
+---
+
+# 0. YOUR ROLE AND MISSION
+
+You are the principal software architect, graphics engineer, 3D technical director, animation engineer, AI systems architect, UI/UX designer, and full-stack developer responsible for building SYNMOTION AI.
+
+You are continuing development of an existing application. You are not starting a new project.
+
+Your mission is to transform the existing SYNMOTION AI prototype into a professional-grade, AI-powered 3D animation and cinematic production studio.
+
+This directive defines the intended product, functionality, architecture, quality standards, and user experience.
+
+**IMPLEMENT THE ACTUAL PRODUCT. DO NOT MERELY DESCRIBE IT.**
+
+Inspect the existing codebase, understand its current state, preserve working functionality, identify dependencies, and implement the required systems in a structured manner.
+
+Do not generate another attractive prototype with nonfunctional controls.
+
+Do not fabricate rendering capabilities.
+
+Do not simulate functionality that should be real.
+
+Do not claim a feature is operational simply because its interface exists.
+
+Every major feature must connect to an actual working system.
+
+---
+
+# 1. THE PRODUCT VISION
+
+SYNMOTION AI is an AI-powered creative production environment designed to make professional 3D animation and cinematic filmmaking dramatically easier.
+
+The ambition is to combine the creative capabilities and workflows associated with:
+
+* Unreal Engine 5.
+* Blender.
+* Autodesk Maya.
+* Cinema 4D.
+* DaVinci Resolve.
+* Adobe After Effects.
+* Professional virtual production studios.
+
+Reimagine those capabilities around an intelligent AI Director that understands natural language, scenes, characters, environments, animation, cinematography, and storytelling.
+
+The application should allow someone with no 3D experience to create sophisticated animation.
+
+It should also provide enough control for experienced animators, filmmakers, and technical artists to work at a professional level.
+
+## THE VISUAL STANDARD
+
+The target is AAA video game cinematics and photorealistic CGI.
+
+I want:
+
+* Detailed, realistic 3D environments.
+* Convincing digital humans.
+* Sophisticated character animation.
+* Realistic movement and interactions.
+* Physically based materials.
+* Advanced lighting.
+* Realistic reflections and shadows.
+* Cinematic camera movement.
+* Environmental simulation.
+* High-detail models.
+* Complex animation.
+* Professional rendering.
+* High-quality visual effects.
+
+**NO BLOCKY BULLSHIT.**
+
+Do not substitute primitive cubes, spheres, cylinders, or low-poly placeholders for finished models and environments.
+
+Primitive geometry is acceptable for technical blockouts, collision volumes, prototyping, and invisible infrastructure.
+
+It is not acceptable as finished cinematic content.
+
+A basic Three.js scene with moving cubes is not the intended product.
+
+A browser-based viewport is not automatically equivalent to a professional rendering engine.
+
+The application must use the appropriate technology for the desired visual quality.
+
+---
+
+# 2. THE CREATIVE EXPERIENCE
+
+The defining feature of SYNMOTION AI is that users should have multiple ways to create and control animation.
+
+Users should be able to:
+
+1. Describe what they want through AI chat.
+2. Manipulate objects directly in a 3D viewport.
+3. Record camera movement.
+4. Record object and character movement.
+5. Create and edit keyframes.
+6. Direct characters through natural language.
+7. Write scripts to control scenes.
+8. Connect visual logic nodes.
+9. Upload images to create or reconstruct 3D environments.
+10. Import existing 3D models and animation.
+11. Build complete films from a single prompt.
+
+All these workflows must operate on the same underlying scene, animation, and project data.
+
+This is essential.
+
+AI editing, manual manipulation, recorded animation, scripts, nodes, timeline editing, and final rendering must never become disconnected systems.
+
+---
+
+# 3. COMPLETE GUI REDESIGN: PROFESSIONAL DESKTOP APPLICATION EXPERIENCE
+
+Completely redesign the existing GUI.
+
+Do not merely apply a new theme to the existing dashboard.
+
+The application must look and behave like a beautiful, sophisticated desktop creative application that happens to be delivered through the web.
+
+**DESKTOP-FIRST. WEB-AVAILABLE. PROFESSIONAL-GRADE.**
+
+It should not look like a generic SaaS dashboard.
+
+It should feel like a professional 3D production suite.
+
+## 3.1 Visual design
+
+Create a premium, immersive interface.
+
+Design direction:
+
+* Near-black backgrounds.
+* Deep navy ambient lighting.
+* Restrained blue accents.
+* Silver highlights.
+* Liquid-glass surfaces.
+* Subtle reflections.
+* Sophisticated depth.
+* Clean typography.
+* Carefully controlled contrast.
+* Beautiful transitions.
+* High-quality icons.
+* Precise spacing.
+* Minimal unnecessary decoration.
+
+Avoid excessive glass effects that reduce readability.
+
+The interface should be visually impressive without becoming cluttered.
+
+## 3.2 Desktop application layout
+
+Create a professional workspace consisting of:
+
+**TOP APPLICATION BAR**
+
+* SYNMOTION AI branding.
+* Project name.
+* Save status.
+* Undo.
+* Redo.
+* Workspace selector.
+* Playback controls.
+* Render controls.
+* Preview settings.
+* Export.
+* Settings.
+* User profile.
+
+**LEFT TOOL PANEL**
+
+* Scene hierarchy.
+* Object browser.
+* Character browser.
+* Environment browser.
+* Asset library.
+* Creation tools.
+* AI tools.
+* Import tools.
+* Searchable commands.
+
+**CENTER VIEWPORT**
+
+A large interactive 3D viewport.
+
+This is the primary creative workspace.
+
+Support:
+
+* Perspective view.
+* Orthographic view.
+* Camera view.
+* Multiple viewports.
+* Object selection.
+* Transform gizmos.
+* Translation.
+* Rotation.
+* Scaling.
+* Scene navigation.
+* Camera navigation.
+* Object manipulation.
+* Lighting previews.
+* Material previews.
+* Animation playback.
+* Camera paths.
+* Viewport overlays.
+
+This must connect to the actual scene graph and rendering system.
+
+**RIGHT INSPECTOR**
+
+A context-sensitive property editor.
+
+When a user selects an object, character, camera, material, light, or environment, display the relevant controls.
+
+Examples:
+
+Character:
+
+* Position.
+* Rotation.
+* Scale.
+* Rig.
+* Animation.
+* Facial expressions.
+* Clothing.
+* Materials.
+* Physics.
+* Constraints.
+
+Camera:
+
+* Position.
+* Rotation.
+* Focal length.
+* Aperture.
+* Focus distance.
+* Movement.
+* Camera path.
+* Animation.
+
+Light:
+
+* Type.
+* Intensity.
+* Color.
+* Position.
+* Direction.
+* Shadows.
+* Volumetrics.
+
+Environment:
+
+* Terrain.
+* Sky.
+* Weather.
+* Lighting.
+* Materials.
+* Objects.
+* Atmospheric effects.
+
+**BOTTOM TIMELINE**
+
+A professional animation and editing timeline.
+
+It must support multiple tracks, keyframes, playback, scrubbing, editing, synchronization, and animation curves.
+
+## 3.3 Customizable workspaces
+
+Provide:
+
+* Dockable panels.
+* Resizable panels.
+* Collapsible panels.
+* Rearrangeable layouts.
+* Expandable viewport.
+* Full-workspace modes.
+* Saved workspace configurations.
+* Workspace presets.
+* Custom toolbars.
+* Keyboard shortcuts.
+
+Suggested workspaces:
+
+1. Director.
+2. 3D Studio.
+3. Modeling.
+4. Environment Design.
+5. Character Studio.
+6. Animation Studio.
+7. Cinematography.
+8. Materials and Lighting.
+9. Visual Effects.
+10. Audio Studio.
+11. Video Editing.
+12. Scripting.
+13. AI Studio.
+
+The interface should adapt to the task rather than forcing every tool onto the screen simultaneously.
+
+## 3.4 Desktop interaction conventions
+
+Implement professional desktop interactions:
+
+* Keyboard shortcuts.
+* Context menus.
+* Drag and drop.
+* Multi-selection.
+* Object hierarchy.
+* Undo and redo.
+* Autosave.
+* Command palette.
+* Searchable tools.
+* Selection highlighting.
+* Viewport navigation.
+* Timeline shortcuts.
+* Tooltips.
+
+Provide familiar shortcuts where appropriate:
+
+* G: Move.
+* R: Rotate.
+* S: Scale.
+* Ctrl+Z: Undo.
+* Ctrl+Shift+Z: Redo.
+* Space: Play or pause.
+* Delete: Delete selection.
+* F: Frame selected object.
+
+Prevent conflicts with browser shortcuts and provide customizable bindings.
+
+---
+
+# 4. RENDERING ENGINE ARCHITECTURE
+
+This is one of the most important engineering decisions.
+
+The visual ambition is Unreal Engine 5-class cinematic rendering.
+
+Do not assume that Three.js alone can provide the complete rendering capabilities required.
+
+Build a modular rendering architecture.
+
+## 4.1 Rendering technologies
+
+Evaluate and support the following technologies where practical:
+
+**UNREAL ENGINE 5**
+
+Target capabilities:
+
+* Nanite virtualized geometry.
+* Lumen global illumination.
+* Hardware ray tracing.
+* Virtual shadow maps.
+* Advanced lighting.
+* Volumetric effects.
+* Skeletal animation.
+* Niagara-style visual effects.
+* Cinematic cameras.
+* Movie Render Queue.
+
+**BLENDER**
+
+Support:
+
+* Blender Python automation.
+* Cycles.
+* Eevee.
+* High-quality offline rendering.
+* Geometry Nodes.
+* Rigging.
+* Animation.
+* Simulation.
+* Compositing.
+* Procedural materials.
+
+**THREE.JS**
+
+Use for:
+
+* Interactive viewport.
+* Scene previews.
+* Lightweight real-time visualization.
+* Browser-based manipulation.
+* WebGL and WebGPU rendering where supported.
+
+**EXTERNAL VIDEO PROVIDERS**
+
+Support AI-generated footage and image-to-video through provider adapters.
+
+These technologies have different capabilities and requirements.
+
+Do not misrepresent a Three.js viewport as equivalent to Unreal Engine 5.
+
+## 4.2 Unified rendering provider architecture
+
+Implement:
+
+* UnrealEngineRenderer.
+* BlenderRenderer.
+* ThreeJSRenderer.
+* ExternalVideoRenderer.
+
+Each provider must expose:
+
+* Availability.
+* Version.
+* Supported capabilities.
+* Supported formats.
+* Maximum resolution.
+* Frame rates.
+* Material support.
+* Lighting support.
+* Animation support.
+* Rendering progress.
+* Cancellation.
+* Errors.
+* Output assets.
+
+The AI Director should select the most appropriate rendering technology for each production task.
+
+## 4.3 Infrastructure honesty
+
+Inspect the actual execution environment.
+
+Determine whether the required rendering engines, GPUs, drivers, libraries, and worker infrastructure are available.
+
+Do not claim Unreal Engine is operational if it is not installed and tested.
+
+If the current environment cannot run Unreal Engine:
+
+* Build the provider architecture.
+* Implement the available rendering backend.
+* Establish the integration points.
+* Document the required rendering infrastructure.
+* Do not silently downgrade the visual target.
+
+Support dedicated GPU rendering workers and cloud rendering workers as the architecture evolves.
+
+---
+
+# 5. REAL 3D MODELING AND ASSET SYSTEM
+
+Create a professional 3D asset pipeline.
+
+Support:
+
+* High-detail geometry.
+* Organic models.
+* Hard-surface models.
+* Architecture.
+* Vehicles.
+* Furniture.
+* Clothing.
+* Props.
+* Detailed vegetation.
+* Terrain.
+* Mechanical objects.
+* Environmental assets.
+* Imported models.
+
+Support:
+
+* GLB.
+* GLTF.
+* FBX.
+* OBJ.
+* USD.
+* USDZ where supported.
+* Alembic where supported.
+* Native formats through rendering adapters.
+
+Preserve:
+
+* Material assignments.
+* Textures.
+* Skeletons.
+* Animation.
+* Object hierarchies.
+* Dependencies.
+* Metadata.
+
+## 5.1 PBR materials
+
+Support:
+
+* Base color.
+* Metallic.
+* Roughness.
+* Normal maps.
+* Ambient occlusion.
+* Height maps.
+* Displacement.
+* Opacity.
+* Emission.
+* Subsurface scattering.
+* Clearcoat.
+* Transmission.
+* Refraction.
+* Anisotropy.
+* Detail maps.
+
+Materials must respond to actual scene lighting.
+
+## 5.2 Asset generation
+
+Create an extensible pipeline capable of:
+
+* Reusing existing assets.
+* Importing user assets.
+* Generating 3D assets through compatible AI services.
+* Generating textures.
+* Generating materials.
+* Generating environments.
+* Creating procedural geometry.
+* Acquiring appropriately licensed assets.
+* Importing animations.
+* Retargeting animation.
+
+Maintain asset licensing and source information.
+
+Do not substitute unrelated primitive shapes when an asset cannot be generated.
+
+---
+
+# 6. CHARACTER STUDIO AND DIGITAL HUMANS
+
+Build a dedicated Character Studio.
+
+The goal is realistic digital characters with professional animation capabilities.
+
+## 6.1 Digital humans
+
+Support:
+
+* Realistic anatomy.
+* Detailed facial geometry.
+* Skin textures.
+* Skin shading.
+* Subsurface scattering.
+* Eyes.
+* Teeth.
+* Hair.
+* Eyebrows.
+* Facial hair.
+* Clothing.
+* Accessories.
+* Detailed hands.
+* Facial expressions.
+
+## 6.2 Rigging
+
+Support:
+
+* Skeletal rigs.
+* IK.
+* FK.
+* Control rigs.
+* Facial rigs.
+* Blend shapes.
+* Morph targets.
+* Bone constraints.
+* Retargetable animation.
+* Animation clips.
+* Root motion.
+
+## 6.3 Character animation
+
+Support:
+
+* Walking.
+* Running.
+* Sitting.
+* Standing.
+* Turning.
+* Jumping.
+* Falling.
+* Fighting.
+* Dancing.
+* Gestures.
+* Object interaction.
+* Facial expressions.
+* Lip synchronization.
+* Body language.
+* Idle animation.
+* Choreographed movement.
+
+Support motion capture integration.
+
+Support animation retargeting.
+
+Maintain temporal consistency and believable transitions.
+
+Avoid foot sliding, teleportation, unnatural poses, and sudden proportion changes.
+
+## 6.4 Clothing and hair
+
+Where supported:
+
+* Cloth simulation.
+* Hair simulation.
+* Fabric deformation.
+* Secondary motion.
+* Wind interaction.
+* Collision handling.
+* Dynamic accessories.
+
+---
+
+# 7. ANIMATION STUDIO: REAL-TIME RECORDING AND DIRECT MANIPULATION
+
+This is a core product feature.
+
+Users must be able to interact with a 3D scene, record what they do, and turn those actions into editable animation.
+
+## 7.1 Camera recording
+
+Create a dedicated RECORD CAMERA mode.
+
+The user should be able to:
+
+1. Enter a scene.
+2. Select a camera.
+3. Activate recording.
+4. Navigate the 3D environment.
+5. Move the camera.
+6. Rotate the camera.
+7. Zoom.
+8. Adjust focus.
+9. Change camera properties.
+10. Perform cinematic movements.
+11. Stop recording.
+12. Automatically generate an editable animation track.
+
+Capture actual camera data over time:
+
+* Position.
+* Rotation.
+* Orientation.
+* Focal length.
+* Focus distance.
+* Aperture where supported.
+* Timestamps.
+* Relevant camera settings.
+
+The resulting camera path must be visible in the viewport.
+
+The resulting animation must be editable in the timeline.
+
+## 7.2 Virtual cinematography controls
+
+Support:
+
+* First-person camera navigation.
+* Orbit navigation.
+* Free-fly navigation.
+* Dolly.
+* Crane.
+* Tracking.
+* Follow camera.
+* Drone-style movement.
+
+The user should feel like a cinematographer operating a virtual camera.
+
+## 7.3 Camera path editing
+
+After recording, allow:
+
+* Keyframe movement.
+* Keyframe deletion.
+* Timing changes.
+* Interpolation changes.
+* Speed adjustments.
+* Smooth transitions.
+* Pauses.
+* Camera path reversal.
+* Camera path blending.
+* Curve editing.
+* Bézier interpolation.
+* Spline interpolation.
+* Linear interpolation.
+
+## 7.4 Record any scene element
+
+Recording must also work for:
+
+* Characters.
+* Objects.
+* Props.
+* Lights.
+* Cameras.
+* Environmental elements.
+* Animation controls.
+
+Record:
+
+* Position.
+* Rotation.
+* Scale.
+* Relevant properties.
+* Animation states.
+* Timestamps.
+
+The captured data must become editable animation data.
+
+---
+
+# 8. PROFESSIONAL ANIMATION TIMELINE
+
+Build a genuine animation timeline.
+
+It must combine professional 3D animation workflows with video editing.
+
+## 8.1 Track types
+
+Support:
+
+* Camera tracks.
+* Character tracks.
+* Skeletal animation tracks.
+* Facial animation tracks.
+* Object tracks.
+* Transform tracks.
+* Material tracks.
+* Lighting tracks.
+* Environmental effect tracks.
+* Particle tracks.
+* Audio tracks.
+* Dialogue tracks.
+* Video tracks.
+* Script/event tracks.
+* AI-generated animation tracks.
+
+## 8.2 Keyframe system
+
+Support:
+
+* Position.
+* Rotation.
+* Scale.
+* Visibility.
+* Material properties.
+* Lighting properties.
+* Camera properties.
+* Facial expressions.
+* Animation states.
+
+Allow users to:
+
+* Add keyframes.
+* Delete keyframes.
+* Move keyframes.
+* Copy and paste.
+* Duplicate.
+* Multi-select.
+* Adjust interpolation.
+* Edit curves.
+* Loop animations.
+* Blend transitions.
+
+## 8.3 Timeline controls
+
+Include:
+
+* Play.
+* Pause.
+* Stop.
+* Frame stepping.
+* Scrubbing.
+* Loop playback.
+* Playback speed.
+* Zoom.
+* Navigation.
+* Markers.
+* Shot markers.
+* Scene markers.
+* Keyframe markers.
+
+Changing the playhead must update the actual scene to the corresponding animation state.
+
+The timeline must be synchronized with the rendering system.
+
+Support configurable frame rates.
+
+---
+
+# 9. AI CHARACTER AND OBJECT MOTION
+
+Users must be able to direct movement using natural language.
+
+Examples:
+
+"Make the character walk toward the window, stop, turn around, and look at the camera."
+
+"Have the robot pick up the object and place it on the table."
+
+"Make the character sit down, cross their legs, and look toward the television."
+
+"Have the car drive around the building and disappear into the distance."
+
+The AI must convert instructions into actual animation data.
+
+Support:
+
+* Character movement.
+* Animation state machines.
+* Skeletal animation.
+* IK.
+* FK.
+* Motion retargeting.
+* Root motion.
+* Animation blending.
+* Procedural motion.
+* Timeline-driven animation.
+* Object interaction.
+
+The user must be able to adjust the resulting animation manually.
+
+---
+
+# 10. AI DIRECTOR: CHAT-BASED SCENE CONTROL
+
+Create a persistent AI Director chat panel.
+
+This should be one of the primary interaction methods.
+
+The AI must understand:
+
+* Current project.
+* Scene hierarchy.
+* Selected object.
+* Character identities.
+* Environment.
+* Materials.
+* Lighting.
+* Camera state.
+* Timeline.
+* Animation state.
+* Existing assets.
+* Production instructions.
+
+Examples:
+
+"Make this environment look like a rainy downtown street at night."
+
+"Add a realistic black sports car behind the character."
+
+"Move the camera closer and lower the angle."
+
+"Make the lighting more dramatic."
+
+"Have the character walk toward the camera."
+
+"Change the jacket to black leather."
+
+"Add fog between the buildings."
+
+"Create a slow orbital camera movement."
+
+"Make the second scene feel more cinematic."
+
+The AI must operate on actual scene data.
+
+It must not simply describe the requested changes.
+
+## AI action architecture
+
+Every AI action must:
+
+1. Understand the request.
+2. Identify the affected scene elements.
+3. Generate structured scene commands.
+4. Validate the commands.
+5. Execute through the shared scene system.
+6. Update the viewport.
+7. Update the timeline where appropriate.
+8. Record the operation for undo and history.
+
+Support preview and confirmation for significant destructive changes.
+
+AI edits must be reversible.
+
+---
+
+# 11. IMAGE-TO-3D AND ENVIRONMENT RECONSTRUCTION
+
+This is a major differentiating feature.
+
+Users must be able to upload images and create 3D environments from them.
+
+The system must support more than displaying an image on a flat plane.
+
+## 11.1 Single-image reconstruction
+
+Allow users to upload a photograph and request:
+
+"Turn this into a navigable 3D environment."
+
+Analyze:
+
+* Perspective.
+* Depth.
+* Architecture.
+* Geometry.
+* Lighting.
+* Objects.
+* Materials.
+* Environmental structure.
+* Camera position.
+
+Use compatible depth estimation, geometry reconstruction, and image-to-3D technologies.
+
+Generate plausible 3D geometry where possible.
+
+When the original image does not contain sufficient information about hidden surfaces, infer plausible geometry and clearly identify approximations.
+
+## 11.2 Multi-image reconstruction
+
+Support multiple photographs of the same environment.
+
+Evaluate:
+
+* Photogrammetry.
+* Structure from Motion.
+* Multi-view reconstruction.
+* Neural rendering.
+* 3D Gaussian Splatting.
+* NeRF workflows.
+* Depth estimation.
+* Image-to-3D generation.
+
+Select the appropriate workflow for the supplied material.
+
+## 11.3 Image-based environment generation
+
+Allow users to select an uploaded image as:
+
+* Reconstruction source.
+* Visual reference.
+* Style reference.
+* Texture source.
+* Background plate.
+* First-frame composition.
+* Concept image.
+
+Preserve relevant architecture, composition, palette, lighting, materials, and atmosphere.
+
+## 11.4 Environment editing
+
+After creation, users must be able to:
+
+* Navigate the environment.
+* Change the camera.
+* Add objects.
+* Remove objects.
+* Modify lighting.
+* Change weather.
+* Modify materials.
+* Add characters.
+* Animate elements.
+* Expand the environment.
+* Replace assets.
+
+The result must integrate into the actual scene graph and rendering pipeline.
+
+Clearly distinguish actual 3D reconstruction from textured backdrops, depth approximations, and Gaussian splat representations.
+
+---
+
+# 12. ASSET LIBRARY AND IMPORT SYSTEM
+
+Create a professional drag-and-drop asset library.
+
+Support:
+
+* Images.
+* Videos.
+* 3D models.
+* Textures.
+* Materials.
+* Audio.
+* Motion capture data.
+* Animation files.
+* HDR environments.
+* Reference documents.
+
+Provide:
+
+* Thumbnails.
+* Categories.
+* Search.
+* Tags.
+* Metadata.
+* Preview.
+* Import status.
+* Dependencies.
+* Source information.
+
+Allow users to drag assets directly into the viewport and scene hierarchy.
+
+Support automatic asset analysis and AI-assisted integration.
+
+---
+
+# 13. SCRIPTING STUDIO
+
+Create a dedicated scripting workspace.
+
+Users should be able to write code to control exactly what happens inside a scene.
+
+Provide a professional code editor with:
+
+* Syntax highlighting.
+* Autocomplete.
+* Error reporting.
+* Script organization.
+* Execution controls.
+* Documentation.
+* Scene API reference.
+
+Implement a safe scripting API.
+
+Example:
+
+```javascript
+scene.camera.moveTo({
+  position: [0, 3, 8],
+  duration: 4,
+  easing: "easeInOut"
+});
+
+character.walkTo({
+  position: [2, 0, 0],
+  duration: 5
+});
+
+scene.environment.setWeather({
+  type: "rain",
+  intensity: 0.8
+});
+```
+
+These are illustrative API calls. Implement the actual underlying functions.
+
+Scripts should control:
+
+* Objects.
+* Characters.
+* Cameras.
+* Lighting.
+* Materials.
+* Animation.
+* Timeline events.
+* Scene transitions.
+* Environmental effects.
+* Physics.
+* Rendering settings.
+
+## Scripting safety
+
+Never expose unrestricted server-side execution.
+
+Use sandboxing, restricted APIs, validation, execution limits, and resource limits.
+
+Support preview, error recovery, and undo where practical.
+
+## Shared scene data
+
+Visual editing and scripts must modify the same underlying scene.
+
+Users should be able to create something visually, inspect its script, modify the script, and see the result in the viewport.
+
+---
+
+# 14. VISUAL NODE EDITOR
+
+Implement an optional node-based visual scripting system.
+
+Allow users to connect nodes to create:
+
+* Animation logic.
+* Object behavior.
+* Character interactions.
+* Scene events.
+* Camera behavior.
+* Environmental effects.
+* Conditional events.
+* Timed actions.
+
+Example:
+
+START
+|
+WAIT 2 SECONDS
+|
+CHARACTER WALKS
+|
+CAMERA TRACKS
+|
+LIGHTS DIM
+|
+SCENE TRANSITION
+
+Support reusable node groups and templates.
+
+The AI Director should be able to create or modify node graphs through natural language.
+
+Node graphs must connect to the actual scene execution system.
+
+---
+
+# 15. MULTIPLE CREATIVE WORKFLOWS
+
+The user must be able to accomplish the same task through different methods.
+
+**NATURAL LANGUAGE:** Tell the AI what to do.
+
+**DIRECT MANIPULATION:** Move characters, objects, lights, and cameras manually.
+
+**RECORDING:** Capture real-time camera and object movements.
+
+**KEYFRAMES:** Create and edit animation manually.
+
+**SCRIPTING:** Write code to control scene behavior.
+
+**NODE EDITING:** Connect visual logic nodes.
+
+**IMPORTED ANIMATION:** Import motion capture and existing animation assets.
+
+All methods must work together.
+
+The user must be able to combine them in the same scene.
+
+---
+
+# 16. VISUAL DNA AND CONTINUITY SYSTEM
+
+Preserve and expand the existing Visual DNA architecture.
+
+Create persistent profiles for:
+
+* Characters.
+* Environments.
+* Objects.
+* Clothing.
+* Materials.
+* Animation.
+* Lighting.
+* Camera language.
+* Visual style.
+
+Support:
+
+* Character identity consistency.
+* Environment continuity.
+* Object continuity.
+* Wardrobe continuity.
+* Lighting continuity.
+* Animation continuity.
+* Camera continuity.
+
+Maintain references to actual assets and reusable scene configurations.
+
+Do not promise perfect identity preservation beyond the capabilities of the selected rendering and generation systems.
+
+---
+
+# 17. COMPLETE AUTONOMOUS FILM PRODUCTION
+
+The user must be able to describe an entire film using ONE natural-language prompt.
+
+The AI Director should orchestrate the complete production.
+
+Pipeline:
+
+USER PROMPT
+|
+AI DIRECTOR
+|
+SCREENPLAY
+|
+PRODUCTION BIBLE
+|
+VISUAL DNA
+|
+ASSET GENERATION
+|
+ENVIRONMENT CREATION
+|
+CHARACTER CREATION
+|
+STORYBOARD
+|
+SCENE AND SHOT DECOMPOSITION
+|
+ANIMATION PLANNING
+|
+CAMERA AND LIGHTING
+|
+3D RENDERING
+|
+AI VIDEO GENERATION WHERE APPROPRIATE
+|
+AUDIO GENERATION
+|
+SCENE QUALITY CONTROL
+|
+MASTER ASSEMBLY
+|
+FINAL QUALITY CONTROL
+|
+DOWNLOADABLE FILM
+
+Support durations:
+
+* 30 seconds.
+* 1 minute.
+* 3 minutes.
+* 5 minutes.
+* 10 minutes.
+* 15 minutes.
+* 30 minutes.
+* Custom duration.
+
+Long productions must be intelligently decomposed into scenes and shots.
+
+The user must not be required to manually generate every clip or stitch the film together.
+
+## Hybrid production
+
+Select the appropriate technique for each shot:
+
+* Unreal Engine rendering.
+* Blender rendering.
+* Procedural 3D.
+* Digital human animation.
+* Motion capture.
+* AI-generated video.
+* Image-to-video.
+* Imported footage.
+* Compositing.
+* Visual effects.
+
+The AI Director should orchestrate the different techniques.
+
+Do not force every shot through the same generation method.
+
+---
+
+# 18. CINEMATIC CAMERA AND DIRECTING SYSTEM
+
+Implement professional virtual cinematography.
+
+Support:
+
+* Dolly.
+* Tracking.
+* Crane.
+* Orbit.
+* Pan.
+* Tilt.
+* Zoom.
+* Handheld simulation.
+* Steadicam-style movement.
+* Drone movement.
+* Follow cameras.
+* Focus pulls.
+* Rack focus.
+* Depth of field.
+* Motion blur.
+* Lens distortion.
+* Cinematic framing.
+
+Support virtual lens configurations:
+
+* 18mm.
+* 24mm.
+* 35mm.
+* 50mm.
+* 85mm.
+* 100mm.
+* Anamorphic configurations where supported.
+
+Support aperture, focal length, sensor size, exposure, focus distance, and shutter settings.
+
+Camera instructions must cause actual camera transformations and optical behavior.
+
+---
+
+# 19. LIGHTING AND ENVIRONMENTAL SIMULATION
+
+Implement advanced lighting and environmental effects using the selected rendering engine.
+
+Support:
+
+* Global illumination.
+* Direct lighting.
+* Indirect lighting.
+* Area lights.
+* Point lights.
+* Spotlights.
+* Directional lights.
+* HDR environments.
+* Reflection probes.
+* Shadow maps.
+* Ray-traced shadows where available.
+* Volumetric lighting.
+* Atmospheric scattering.
+* Reflections.
+* Emissive materials.
+* Fog.
+* Clouds.
+* Rain.
+* Snow.
+* Smoke.
+* Fire.
+* Dust.
+* Wind.
+* Water.
+* Environmental destruction where supported.
+
+Support cinematic lighting setups:
+
+* Three-point lighting.
+* Rembrandt lighting.
+* High-key.
+* Low-key.
+* Rim lighting.
+* Practical lighting.
+* Motivated lighting.
+* Daylight.
+* Golden hour.
+* Night environments.
+
+---
+
+# 20. AUDIO AND POST-PRODUCTION STUDIO
+
+Create an integrated professional audio production workflow.
+
+Support:
+
+* Dialogue.
+* Voiceover.
+* Music.
+* Foley.
+* Environmental sound.
+* Ambience.
+* Spatial audio where supported.
+* Scene-specific sound effects.
+* Audio transitions.
+* Multitrack mixing.
+* Equalization.
+* Compression.
+* Loudness management.
+* Mastering.
+
+Synchronize audio with actual scene timing.
+
+Support multiple audio tracks and editable timeline regions.
+
+---
+
+# 21. DIRECTOR'S CUT AND NATURAL-LANGUAGE REVISION
+
+Preserve and expand Director's Cut.
+
+Users should be able to revise scenes naturally.
+
+Examples:
+
+"Make the second scene darker."
+
+"Slow down the camera movement."
+
+"Change the character's jacket to black."
+
+"Add heavier rain."
+
+"Make the camera follow the character from behind."
+
+"Replace the background with a futuristic city."
+
+The AI must identify affected scene elements and modify only what is necessary.
+
+Preserve unaffected completed scenes.
+
+Maintain:
+
+* Version history.
+* Undo.
+* Redo.
+* Scene snapshots.
+* Asset history.
+* Render history.
+* Rollback.
+
+---
+
+# 22. BACKEND AND RENDERING INFRASTRUCTURE
+
+The browser is the creative control room.
+
+It must not be responsible for every expensive rendering task.
+
+Implement persistent backend workers.
+
+Support:
+
+* Job queues.
+* Rendering workers.
+* GPU workers where available.
+* Cloud rendering workers.
+* CPU fallback where appropriate.
+* Persistent job state.
+* Scene-level checkpoints where supported.
+* Retry handling.
+* Cancellation.
+* Progress reporting.
+* Resource limits.
+* Timeouts.
+* Worker health monitoring.
+* Asset caching.
+* Temporary file cleanup.
+* Atomic asset registration.
+
+Rendering must continue if the user closes the browser.
+
+The backend must safely recover interrupted jobs.
+
+Do not claim frame-level resume unless it is implemented.
+
+Preserve completed scene outputs when another scene fails.
+
+Prevent duplicate execution through atomic job claiming and idempotent operations.
+
+Keep API keys server-side.
+
+Use the existing database and media storage architecture where practical.
+
+---
+
+# 23. FIX THE EXISTING VIDEO PRODUCTION FAILURES
+
+The independent Phase 2 audit identified:
+
+* Duplicate MOOV atoms.
+* Invalid H.264 NAL units.
+* Corrupted master MP4.
+* Synthetic testsrc2 production imagery.
+* No genuine backend Three.js rendering.
+* Browser-dependent recording.
+
+Investigate the underlying causes.
+
+Do not simply re-encode the damaged test file and declare the problem fixed.
+
+Correct the source implementation.
+
+## MP4 assembly
+
+* Never concatenate MP4 binary files directly.
+* Normalize source streams.
+* Normalize timestamps.
+* Normalize frame rates.
+* Normalize pixel formats.
+* Normalize audio sample rates.
+* Use correct FFmpeg concat workflows.
+* Generate to temporary files.
+* Validate the result.
+* Publish atomically.
+
+## Mandatory quality control
+
+Use FFprobe and complete FFmpeg decoding.
+
+Test:
+
+* Container integrity.
+* Duplicate MOOV atoms.
+* Invalid NAL units.
+* Corrupt frames.
+* Missing frames.
+* Unexpected black frames.
+* Frozen intervals.
+* Video duration.
+* Audio duration.
+* Resolution.
+* Frame rate.
+* Audio coverage.
+* Synchronization.
+* Download integrity.
+
+Use full decoding tests, including:
+
+`ffmpeg -v error -i input.mp4 -f null -`
+
+Capture the actual exit code and diagnostic output.
+
+A corrupted master must never receive COMPLETED status.
+
+---
+
+# 24. APPLICATION DATA ARCHITECTURE
+
+All editing and production systems must share one underlying project architecture.
+
+The following must operate on the same scene and animation data:
+
+* 3D viewport.
+* Scene hierarchy.
+* Inspector.
+* Timeline.
+* Camera recorder.
+* Character animation.
+* AI Director.
+* Script editor.
+* Node editor.
+* Rendering engine.
+* Asset library.
+
+Implement a shared scene graph and animation model.
+
+Support:
+
+* Scene state management.
+* Object identity.
+* Animation data.
+* Timeline synchronization.
+* Command execution.
+* Event handling.
+* Undo/redo.
+* Autosave.
+* Version history.
+* Asset dependencies.
+* Project persistence.
+
+Changes made in one workspace must be reflected in all other workspaces.
+
+Do not create separate disconnected implementations.
+
+---
+
+# 25. WEB AND DEVICE SUPPORT
+
+The desktop experience is the priority.
+
+SYNMOTION must remain accessible through the web.
+
+Desktop:
+
+* Full professional editing environment.
+* Complete viewport.
+* Timeline.
+* Recording.
+* Scripting.
+* Node editing.
+* AI Director.
+* Rendering controls.
+
+Tablet:
+
+* Simplified editing.
+* Viewport interaction.
+* Timeline controls.
+* AI editing.
+* Asset management.
+
+Mobile:
+
+* AI-directed scene editing.
+* Project management.
+* Asset uploads.
+* Playback.
+* Basic scene manipulation.
+* Render monitoring.
+
+Do not squeeze the complete desktop interface into a phone screen.
+
+Provide responsive workspaces appropriate to each device.
+
+---
+
+# 26. DEVELOPMENT STRATEGY
+
+Do not attempt to implement every feature simultaneously without a coherent foundation.
+
+Inspect the current project and establish an implementation plan.
+
+Work in stages.
+
+## STAGE 1: FOUNDATION AND GUI
+
+* Audit existing architecture.
+* Complete desktop application redesign.
+* Establish shared scene architecture.
+* Implement workspace management.
+* Implement viewport.
+* Implement scene hierarchy.
+* Implement inspector.
+* Implement timeline foundation.
+
+## STAGE 2: SCENE AND ANIMATION SYSTEM
+
+* Object manipulation.
+* Transform system.
+* Animation data.
+* Keyframes.
+* Playback.
+* Interpolation.
+* Undo/redo.
+* Persistence.
+
+## STAGE 3: RECORDING SYSTEM
+
+* Camera navigation.
+* Camera recording.
+* Object recording.
+* Character recording.
+* Animation track generation.
+* Editable keyframes.
+* Camera paths.
+* Curve editing.
+
+## STAGE 4: AI DIRECTOR
+
+* Scene-aware chat.
+* Structured scene commands.
+* Natural-language animation.
+* AI object manipulation.
+* AI camera direction.
+* Undo integration.
+
+## STAGE 5: CHARACTER AND ENVIRONMENT STUDIO
+
+* Character creation.
+* Rigging support.
+* Animation retargeting.
+* Environment creation.
+* Image-to-3D workflows.
+* Asset import.
+* Material editing.
+
+## STAGE 6: SCRIPTING AND NODE EDITOR
+
+* Sandboxed scripting.
+* Shared scene API.
+* Visual nodes.
+* Timeline integration.
+* AI-generated scripts and node graphs.
+
+## STAGE 7: HIGH-END RENDERING
+
+* Rendering provider architecture.
+* Blender integration.
+* Unreal Engine integration where infrastructure permits.
+* GPU worker architecture.
+* Cinematic rendering.
+* Animation rendering.
+* Quality control.
+
+## STAGE 8: AUTONOMOUS FILM PRODUCTION
+
+* Screenplay.
+* Storyboard.
+* Scene decomposition.
+* Asset generation.
+* Rendering orchestration.
+* Audio.
+* Editing.
+* Assembly.
+* Final export.
+
+Preserve existing working functionality throughout development.
+
+Do not replace working systems unnecessarily.
+
+---
+
+# 27. TESTING AND VERIFICATION
+
+Test actual functionality.
+
+At minimum:
+
+**APPLICATION**
+
+1. Desktop workspace initialization.
+2. Panel resizing.
+3. Workspace switching.
+4. Keyboard shortcuts.
+5. Autosave.
+6. Project reopening.
+
+**3D**
+7. Scene creation.
+8. Asset import.
+9. Object manipulation.
+10. PBR material rendering.
+11. Lighting and shadows.
+12. Camera movement.
+13. Environment editing.
+
+**ANIMATION**
+14. Keyframe creation.
+15. Timeline playback.
+16. Camera recording.
+17. Camera keyframe generation.
+18. Object recording.
+19. Character animation.
+20. Animation editing.
+21. Animation persistence.
+
+**AI**
+22. Natural-language scene creation.
+23. AI object manipulation.
+24. AI camera direction.
+25. AI animation generation.
+26. AI scene revision.
+27. Undo of AI changes.
+
+**IMAGE AND ASSET WORKFLOWS**
+28. Image upload.
+29. Image analysis.
+30. Supported image-to-3D reconstruction.
+31. Asset import.
+32. Scene integration.
+
+**SCRIPTING**
+33. Script execution.
+34. Scene modification.
+35. Error handling.
+36. Sandboxing.
+37. Undo integration.
+
+**RENDERING**
+38. Backend rendering.
+39. Browser-independent rendering.
+40. Animation rendering.
+41. Audio synchronization.
+42. MP4 assembly.
+43. Full video decoding.
+44. Full audio decoding.
+45. Asset persistence.
+46. Binary download verification.
+
+Deliberately test corrupted media and verify that the quality-control system rejects it.
+
+A successful build does not prove that rendering works.
+
+A successful render does not prove that the output looks good.
+
+A valid MP4 does not prove that the content is genuine 3D animation.
+
+Verify these independently.
+
+---
+
+# 28. REQUIRED CINEMATIC DEMONSTRATION
+
+Produce a genuine five-minute demonstration using the actual SYNMOTION production workflow.
+
+Minimum requirements:
+
+* Three distinct environments.
+* Actual 3D geometry.
+* Detailed assets.
+* Real camera movement.
+* Actual animation.
+* Lighting and shadows.
+* PBR materials.
+* Atmospheric effects.
+* Synthesized audio.
+* Scene assembly.
+* Valid MP4 output.
+
+Do not use testsrc2 as production imagery.
+
+Do not use static images with moving overlays.
+
+Do not duplicate short clips to fake duration.
+
+Do not present primitive blockouts as finished cinematic visuals.
+
+If the available environment cannot produce a high-fidelity five-minute demonstration, state exactly why and provide the largest genuine demonstration that can be verified.
+
+Never fabricate the result.
+
+---
+
+# 29. FINAL ACCEPTANCE AND REPORTING
+
+When implementation reaches a milestone, provide a detailed report.
+
+For each major capability, classify it as:
+
+* VERIFIED.
+* PARTIALLY VERIFIED.
+* FAILED.
+* NOT IMPLEMENTED.
+* BLOCKED BY INFRASTRUCTURE.
+
+Report:
+
+1. Existing architecture inspected.
+2. Files created.
+3. Files modified.
+4. Dependencies installed.
+5. GUI changes.
+6. Rendering architecture.
+7. Animation architecture.
+8. Camera recording functionality.
+9. Timeline functionality.
+10. AI Director functionality.
+11. Scripting functionality.
+12. Image-to-3D functionality.
+13. Actual rendering capabilities.
+14. Tests executed.
+15. Test results.
+16. Actual generated media.
+17. Video and audio integrity.
+18. Performance limitations.
+19. Infrastructure requirements.
+20. Remaining work.
+
+Provide actual command output, source references, file paths, and media metadata where applicable.
+
+Do not claim completion based on source code existing.
+
+Do not claim completion based on a successful build.
+
+Do not claim Unreal Engine integration if only a placeholder adapter exists.
+
+Do not claim hyperrealism because an object has realistic colors.
+
+Do not claim camera recording if no editable animation data is produced.
+
+Do not claim image-to-3D if the result is only a flat textured image.
+
+Do not claim a production is complete unless the actual media has been generated and inspected.
+
+---
+
+# 30. THE NON-NEGOTIABLE PRODUCT GOAL
+
+I want SYNMOTION AI to become a serious, professional, AI-powered 3D animation and filmmaking application.
+
+I want:
+
+* Unreal Engine 5-class rendering ambitions.
+* AAA video game visual quality.
+* Photorealistic environments.
+* Believable digital humans.
+* Sophisticated character animation.
+* Professional camera controls.
+* Real-time camera recording.
+* Object and character recording.
+* A full animation timeline.
+* Editable keyframes.
+* AI-directed animation.
+* Image-to-3D environment creation.
+* Professional asset management.
+* A scripting studio.
+* A visual node editor.
+* A powerful AI Director.
+* Autonomous film production.
+* Professional audio and post-production.
+* A beautiful desktop-style GUI available through the web.
+
+I want to open SYNMOTION, create a scene, upload a reference image, generate a detailed environment, place a character inside it, direct the character's movement, fly the camera around the environment, record that camera movement, edit the animation in the timeline, add lighting and atmospheric effects, and render a cinematic production.
+
+I want beginners to create extraordinary animation through natural language.
+
+I want experienced artists to have the ability to control every detail manually.
+
+I want AI to make professional 3D animation easier, not remove the creative freedom and control that make professional tools powerful.
+
+**THE INTERFACE SHOULD BE BEAUTIFUL. THE ANIMATION SHOULD BE REAL. THE RENDERING SHOULD BE SERIOUS. THE AI SHOULD ACTUALLY DO THE WORK.**
+
+Do not build a glorified dashboard.
+
+Do not build a blocky 3D toy.
+
+Do not build a collection of disconnected demos.
+
+Build an integrated creative application with a real scene graph, real animation data, real rendering infrastructure, and a genuinely useful AI production system.
+
+If the required infrastructure is not currently available, build the correct architecture and identify the missing components.
+
+Never lower the product vision simply because a shortcut is easier.
+
+**SYNMOTION AI: BLENDER MEETS UNREAL ENGINE MEETS AN AI FILM DIRECTOR.**
+
+Imagine It. Direct It. Watch It Come Alive.

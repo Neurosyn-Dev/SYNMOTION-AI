@@ -5,8 +5,8 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    // GitHub Pages project-site URL: https://<owner>.github.io/SYNMOTION-AI/
-    base: '/SYNMOTION-AI/',
+    // Support both local dev/preview root and GitHub Pages path
+    base: (process.env.GITHUB_ACTIONS || process.env.GITHUB_PAGES) ? '/SYNMOTION-AI/' : '/',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {

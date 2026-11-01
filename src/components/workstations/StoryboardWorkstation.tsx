@@ -19,6 +19,7 @@ import {
   Sliders,
   ChevronDown,
   ChevronUp,
+  X,
 } from 'lucide-react';
 
 interface Props {

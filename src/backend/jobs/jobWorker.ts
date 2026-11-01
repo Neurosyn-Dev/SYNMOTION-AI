@@ -294,7 +294,7 @@ export class JobWorker {
         const assetId = scene.generatedVideoUrl.replace('/api/assets/', '').replace('/stream', '');
         const asset = MediaAssetService.getAsset(assetId);
         if (asset && asset.storageLocation === 'local') {
-          const testPath = path.resolve(process.cwd(), 'data', 'assets', asset.storageKey);
+          const testPath = MediaAssetService.getLocalFilePath(asset.storageKey);
           if (fs.existsSync(testPath)) {
             localPath = testPath;
           }
@@ -329,7 +329,7 @@ export class JobWorker {
         });
 
         scene.generatedVideoUrl = sceneAsset.url;
-        localPath = path.resolve(process.cwd(), 'data', 'assets', sceneAsset.storageKey);
+        localPath = MediaAssetService.getLocalFilePath(sceneAsset.storageKey);
       }
 
       sceneVideoPaths.push(localPath);

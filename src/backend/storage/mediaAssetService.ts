@@ -122,6 +122,13 @@ export class MediaAssetService {
     return AssetRepository.getById(assetId);
   }
 
+  public static getLocalFilePath(storageKey: string): string {
+    if (this.driver instanceof LocalStorageDriver) {
+      return (this.driver as LocalStorageDriver).getFullPath(storageKey);
+    }
+    return path.resolve(process.cwd(), 'data', 'assets', storageKey);
+  }
+
   public static listProjectAssets(projectId: string): MediaAsset[] {
     return AssetRepository.listByProject(projectId);
   }

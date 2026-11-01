@@ -36,6 +36,10 @@ import {
   RunwayGen3Provider,
 } from './src/backend/providers/implementations.js';
 import {
+  BlenderRendererProvider,
+  UnrealEngineRendererProvider,
+} from './src/backend/providers/renderingProviders.js';
+import {
   CreateJobSchema,
   UpdateJobStatusSchema,
   DirectorsCutSchema,
@@ -61,6 +65,8 @@ ProviderRegistry.register(new ProceduralAudioProvider());
 ProviderRegistry.register(new GeminiReasoningProvider());
 ProviderRegistry.register(new GoogleVeoVideoProvider());
 ProviderRegistry.register(new RunwayGen3Provider());
+ProviderRegistry.register(new BlenderRendererProvider());
+ProviderRegistry.register(new UnrealEngineRendererProvider());
 
 const app = express();
 app.use(express.json({ limit: '25mb' }));

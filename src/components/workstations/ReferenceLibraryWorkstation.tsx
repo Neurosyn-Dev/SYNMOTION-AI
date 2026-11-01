@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import type { FilmProject, ImageReference, VideoReference, ReferenceCategory, MediaAsset } from '../../types/film';
+import { ImageTo3DService } from '../../services/imageTo3d/imageTo3DService';
 import {
   Image as ImageIcon,
   Video as VideoIcon,
@@ -17,6 +18,7 @@ import {
   HardDrive,
   FileText,
   AlertCircle,
+  Layers,
 } from 'lucide-react';
 
 interface Props {
@@ -414,14 +416,32 @@ export const ReferenceLibraryWorkstation: React.FC<Props> = ({
                     {new Date(ref.createdAt).toLocaleDateString()}
                   </span>
 
-                  <button
-                    disabled={isAnalyzing === ref.id}
-                    onClick={() => triggerImageAnalysis(ref)}
-                    className="px-2.5 py-1 rounded bg-black/40 hover:bg-sky-950 border border-slate-700 hover:border-sky-500 text-[11px] text-sky-300 flex items-center gap-1 transition-all"
-                  >
-                    <Sparkles className="w-3 h-3 text-sky-400" />
-                    <span>{isAnalyzing === ref.id ? 'Analyzing...' : 'Re-analyze with Gemini'}</span>
-                  </button>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={async () => {
+                        try {
+                          await ImageTo3DService.reconstructImageTo3D(ref.url, ref.name);
+                          alert(`Successfully reconstructed 3D mesh for ${ref.name} and injected into 3D Viewport!`);
+                        } catch (err: any) {
+                          alert(`Reconstruction error: ${err.message}`);
+                        }
+                      }}
+                      className="px-2.5 py-1 rounded bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-500/40 text-[10px] text-indigo-300 font-bold flex items-center gap-1 transition-all cursor-pointer"
+                      title="Generate 3D Displaced Geometry Mesh and add to Scene Graph"
+                    >
+                      <Layers className="w-3 h-3 text-indigo-400" />
+                      <span>Reconstruct 3D</span>
+                    </button>
+
+                    <button
+                      disabled={isAnalyzing === ref.id}
+                      onClick={() => triggerImageAnalysis(ref)}
+                      className="px-2.5 py-1 rounded bg-black/40 hover:bg-sky-950 border border-slate-700 hover:border-sky-500 text-[10px] text-sky-300 flex items-center gap-1 transition-all"
+                    >
+                      <Sparkles className="w-3 h-3 text-sky-400" />
+                      <span>{isAnalyzing === ref.id ? 'Analyzing...' : 'Traits'}</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

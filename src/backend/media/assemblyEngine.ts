@@ -72,15 +72,15 @@ export class MasterAssemblyEngine {
 
     const { width, height } = ProceduralVideoGenerator.getDimensions(aspectRatio, quality);
 
-    // If only one clip and already matching, we can re-encode or copy; if multiple clips, use concat filter
+    // If multiple clips, use concat filter with explicit PTS normalization
     const inputArgs: string[] = [];
     let filterGraph = '';
 
     for (let i = 0; i < sceneVideoPaths.length; i++) {
       inputArgs.push('-i', sceneVideoPaths[i]);
-      // Standardize each input: scale & pad to width x height, set sar=1, force fps
-      filterGraph += `[${i}:v]scale=${width}:${height}:force_original_aspect_ratio=decrease,pad=${width}:${height}:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=${fps}[v${i}];`;
-      filterGraph += `[${i}:a]aformat=sample_rates=48000:channel_layouts=stereo[a${i}];`;
+      // Standardize each input: scale & pad to width x height, set sar=1, force fps, normalize PTS to 0-based monotonic
+      filterGraph += `[${i}:v]scale=${width}:${height}:force_original_aspect_ratio=decrease,pad=${width}:${height}:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=${fps},setpts=PTS-STARTPTS[v${i}];`;
+      filterGraph += `[${i}:a]aformat=sample_rates=48000:channel_layouts=stereo,asetpts=PTS-STARTPTS[a${i}];`;
     }
 
     // Concat all inputs
@@ -96,20 +96,34 @@ export class MasterAssemblyEngine {
         '-c:v', 'libvpx-vp9',
         '-b:v', '2M',
         '-c:a', 'libopus',
-        '-b:a', '160k'
+        '-b:a', '160k',
+        '-vsync', 'cfr',
+        '-r', fps.toString(),
+        '-max_muxing_queue_size', '4096'
       );
     } else {
-      // High-compatibility MP4
+      // High-compatibility MP4 with constant frame rate and atomic faststart
       encodeArgs.push(
         '-c:v', 'libx264',
         '-profile:v', 'high',
-        '-preset', 'fast',
+        '-preset', 'veryfast',
         '-pix_fmt', 'yuv420p',
+        '-vsync', 'cfr',
+        '-r', fps.toString(),
         '-c:a', 'aac',
         '-b:a', '192k',
+        '-ar', '48000',
+        '-ac', '2',
+        '-max_muxing_queue_size', '4096',
         '-movflags', '+faststart'
       );
     }
+
+    // Isolate writing to a dedicated temp file to prevent MOOV duplication or partial reads
+    const tempAssemblyPath = path.join(
+      outDir,
+      `.assembly_${Date.now()}_${Math.random().toString(36).substring(2, 9)}.tmp.${format}`
+    );
 
     const args = [
       '-y',
@@ -121,10 +135,35 @@ export class MasterAssemblyEngine {
       '-map',
       '[outa]',
       ...encodeArgs,
-      outputPath,
+      tempAssemblyPath,
     ];
 
-    await execFileAsync('/usr/bin/ffmpeg', args);
+    try {
+      await execFileAsync('/usr/bin/ffmpeg', args);
+
+      // Deep stream decode verification before publishing file
+      const streamCheck = await QualityControlService.verifyStreamIntegrity(tempAssemblyPath);
+      if (!streamCheck.valid) {
+        throw new Error(
+          `MasterAssemblyEngine: Assembled stream failed integrity decoding check: ${streamCheck.errors.join('; ')}`
+        );
+      }
+
+      // Safe atomic publish
+      if (fs.existsSync(outputPath)) {
+        try {
+          fs.unlinkSync(outputPath);
+        } catch {}
+      }
+      fs.renameSync(tempAssemblyPath, outputPath);
+    } catch (err) {
+      if (fs.existsSync(tempAssemblyPath)) {
+        try {
+          fs.unlinkSync(tempAssemblyPath);
+        } catch {}
+      }
+      throw err;
+    }
 
     // Run Automated Quality Control on the assembled master cut
     const qc = await QualityControlService.inspectMedia(outputPath, {

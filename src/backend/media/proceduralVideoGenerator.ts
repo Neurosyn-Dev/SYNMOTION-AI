@@ -89,21 +89,53 @@ export class ProceduralVideoGenerator {
       outputPath: tempAudioPath,
     });
 
-    // 2. Generate procedural cinematic animation using FFmpeg visual generation
-    // Uses cell noise, geometric patterns, slow panning motion, and atmospheric lighting
-    const titleEscaped = sceneTitle.replace(/['":]/g, ' ');
-    const cameraLabel = cameraMovement.replace('_', ' ').toUpperCase();
+    // 2. Generate procedural cinematic animation using FFmpeg dynamic gradients, atmospheric lighting, and camera paths
+    const titleEscaped = sceneTitle.replace(/['":\\|]/g, ' ').trim();
+    const cameraLabel = cameraMovement.replace(/[_:]/g, ' ').toUpperCase();
+    const weatherLabel = weather.toUpperCase();
 
-    // Filter graph generates animated backdrop, cinematic color grading, vignette, and film grain
+    // Select color palette based on atmospheric conditions
+    let c0 = '0x0a1024';
+    let c1 = '0x030712';
+    let c2 = '0x1e3a8a';
+    let c3 = '0x020617';
+    let speed = '0.003';
+
+    if (weather === 'rain') {
+      c0 = '0x0b1329';
+      c1 = '0x050c18';
+      c2 = '0x164e63';
+      c3 = '0x020617';
+      speed = '0.004';
+    } else if (weather === 'fog') {
+      c0 = '0x1e293b';
+      c1 = '0x0f172a';
+      c2 = '0x334155';
+      c3 = '0x020617';
+      speed = '0.002';
+    } else if (weather === 'clear') {
+      c0 = '0x1c1917';
+      c1 = '0x0c0a09';
+      c2 = '0x7c2d12';
+      c3 = '0x020617';
+      speed = '0.003';
+    }
+
+    // Filter graph generates procedural cinematic animated gradient backdrop, atmospheric lighting, vignette, and grain
     const filterGraph = `
-      testsrc2=size=${width}x${height}:rate=${fps}:duration=${durationSeconds}[bg];
-      [bg]colorchannelmixer=rr=0.15:gg=0.25:bb=0.45[toned];
-      [toned]vignette=PI/4[vignetted];
-      [vignetted]drawtext=text='SYNMOTION AI  SCENE ${sceneNumber}':fontcolor=white@0.85:fontsize=h/26:x=(w-text_w)/2:y=h*0.12[t1];
+      gradients=s=${width}x${height}:r=${fps}:n=4:c0=${c0}:c1=${c1}:c2=${c2}:c3=${c3}:speed=${speed}:d=${durationSeconds}[bg];
+      [bg]vignette=PI/4[vignetted];
+      [vignetted]noise=alls=7:allf=t+u[grained];
+      [grained]drawtext=text='SYNMOTION AI - SCENE ${sceneNumber}':fontcolor=white@0.85:fontsize=h/26:x=(w-text_w)/2:y=h*0.12[t1];
       [t1]drawtext=text='${titleEscaped}':fontcolor=0x38bdf8@0.95:fontsize=h/20:x=(w-text_w)/2:y=h*0.18[t2];
-      [t2]drawtext=text='CAMERA: ${cameraLabel}  |  ATMOSPHERE: ${weather.toUpperCase()}':fontcolor=white@0.6:fontsize=h/34:x=(w-text_w)/2:y=h*0.84[t3];
-      [t3]drawtext=text='%{pts\\:hms} / 24 FPS':fontcolor=0x7dd3fc@0.8:fontsize=h/30:x=(w-text_w)/2:y=h*0.89[outv]
+      [t2]drawtext=text='CAMERA - ${cameraLabel} - ATMOSPHERE - ${weatherLabel}':fontcolor=white@0.6:fontsize=h/34:x=(w-text_w)/2:y=h*0.84[t3];
+      [t3]drawtext=text='24 FPS CINEMATIC MASTER':fontcolor=0x7dd3fc@0.8:fontsize=h/30:x=(w-text_w)/2:y=h*0.89
     `.replace(/\n\s*/g, '');
+
+    const tempVideoPath = path.join(
+      dir,
+      `.scene_${sceneNumber}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}.tmp.mp4`
+    );
 
     const args = [
       '-y',
@@ -116,24 +148,53 @@ export class ProceduralVideoGenerator {
       '-c:v',
       'libx264',
       '-preset',
-      'fast',
+      'veryfast',
       '-profile:v',
       'high',
       '-pix_fmt',
       'yuv420p',
+      '-vsync',
+      'cfr',
+      '-r',
+      fps.toString(),
       '-c:a',
       'aac',
       '-b:a',
       '192k',
+      '-ar',
+      '48000',
+      '-ac',
+      '2',
       '-shortest',
       '-t',
       durationSeconds.toString(),
-      outputPath,
+      '-movflags',
+      '+faststart',
+      tempVideoPath,
     ];
 
     try {
       await execFileAsync('/usr/bin/ffmpeg', args);
+
+      // Verify stream integrity
+      const streamCheck = await QualityControlService.verifyStreamIntegrity(tempVideoPath);
+      if (!streamCheck.valid) {
+        throw new Error(`Scene render failed integrity check: ${streamCheck.errors.join('; ')}`);
+      }
+
+      // Safe atomic publish
+      if (fs.existsSync(outputPath)) {
+        try {
+          fs.unlinkSync(outputPath);
+        } catch {}
+      }
+      fs.renameSync(tempVideoPath, outputPath);
     } finally {
+      if (fs.existsSync(tempVideoPath)) {
+        try {
+          fs.unlinkSync(tempVideoPath);
+        } catch {}
+      }
       if (fs.existsSync(tempAudioPath)) {
         try {
           fs.unlinkSync(tempAudioPath);

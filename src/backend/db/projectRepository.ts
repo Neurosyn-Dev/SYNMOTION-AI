@@ -97,19 +97,19 @@ export class ProjectRepository {
 
     stmt.run({
       id: project.id,
-      title: project.title,
-      duration_target: project.durationTarget,
-      duration_seconds: project.durationSeconds,
-      aspect_ratio: project.aspectRatio,
-      quality: project.quality,
-      fps: project.fps,
-      genre: project.genre,
+      title: project.title || 'Untitled Film',
+      duration_target: project.durationTarget || '5m',
+      duration_seconds: project.durationSeconds ?? 300,
+      aspect_ratio: project.aspectRatio || '16:9',
+      quality: project.quality || '1080p',
+      fps: project.fps || 24,
+      genre: project.genre || 'CYBERPUNK_NOIR',
       visual_style: project.visualStyle || '',
-      current_phase: project.currentPhase,
+      current_phase: project.currentPhase || 'CONCEPT',
       phase_progress: project.phaseProgress || 0,
       data: JSON.stringify(project),
-      created_at: project.createdAt,
-      updated_at: project.updatedAt,
+      created_at: project.createdAt || new Date().toISOString(),
+      updated_at: project.updatedAt || new Date().toISOString(),
     });
   }
 

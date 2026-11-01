@@ -28,7 +28,49 @@ export interface QualityControlResult {
 
 export class QualityControlService {
   /**
-   * Run comprehensive FFprobe inspection on a media file.
+   * Run full FFmpeg decoding test against null sink to ensure zero corrupted frames or invalid NAL units.
+   */
+  public static async verifyStreamIntegrity(
+    filePath: string
+  ): Promise<{ valid: boolean; errors: string[] }> {
+    const errors: string[] = [];
+    try {
+      // Decode every packet through null sink: catches invalid NAL units, duplicated MOOV atoms, corrupted frames
+      const { stderr } = await execFileAsync('/usr/bin/ffmpeg', [
+        '-v',
+        'error',
+        '-xerror',
+        '-i',
+        filePath,
+        '-f',
+        'null',
+        '-',
+      ]);
+
+      if (stderr && stderr.trim().length > 0) {
+        const errorLines = stderr
+          .split('\n')
+          .map((l) => l.trim())
+          .filter((l) => l.length > 0);
+        errors.push(...errorLines);
+      }
+    } catch (err: any) {
+      const errOut = (err.stderr || err.message || '').toString();
+      const lines = errOut
+        .split('\n')
+        .map((l: string) => l.trim())
+        .filter((l: string) => l.length > 0);
+      errors.push(...(lines.length > 0 ? lines : [err.message]));
+    }
+
+    return {
+      valid: errors.length === 0,
+      errors,
+    };
+  }
+
+  /**
+   * Run comprehensive FFprobe inspection and full decoding verification on a media file.
    */
   public static async inspectMedia(
     filePath: string,
@@ -62,6 +104,14 @@ export class QualityControlService {
         hasAudio: false,
         issues: ['File exists but is empty (0 bytes)'],
       };
+    }
+
+    // 2. Perform deep stream decoding verification (catches MOOV / NAL / packet errors)
+    const streamIntegrity = await this.verifyStreamIntegrity(filePath);
+    if (!streamIntegrity.valid) {
+      for (const err of streamIntegrity.errors) {
+        issues.push(`Stream Decode Integrity Failure: ${err}`);
+      }
     }
 
     // 2. Execute ffprobe to extract format and stream details

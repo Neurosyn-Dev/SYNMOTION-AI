@@ -38,6 +38,15 @@ interface Props {
   projectId?: string;
   sceneId?: string;
   onRecordingComplete?: (assetUrl: string) => void;
+  selectedEntity?: string;
+  onSelectEntity?: (entity: any) => void;
+  weatherOverride?: 'thunderstorm' | 'rain' | 'fog' | 'clear';
+  cameraModeOverride?: 'dolly_in' | 'crane_sweep' | 'tracking_follow' | 'orbit_reveal' | 'handheld_drift';
+  timeOfDayOverride?: 'night' | 'dusk' | 'golden_hour';
+  cameraFovOverride?: number;
+  keyLightIntensityOverride?: number;
+  externalTimeSec?: number;
+  onTimeUpdate?: (time: number) => void;
 }
 
 // Module-scope vectors for zero GC in render loop
@@ -52,6 +61,15 @@ export const Procedural3DStudio: React.FC<Props> = ({
   projectId = 'syn-default',
   sceneId,
   onRecordingComplete,
+  selectedEntity = 'character',
+  onSelectEntity,
+  weatherOverride,
+  cameraModeOverride,
+  timeOfDayOverride,
+  cameraFovOverride,
+  keyLightIntensityOverride,
+  externalTimeSec,
+  onTimeUpdate,
 }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -62,16 +80,26 @@ export const Procedural3DStudio: React.FC<Props> = ({
   const [recordElapsed, setRecordElapsed] = useState(0);
   const [recordedUrl, setRecordedUrl] = useState<string | null>(null);
   const [recordFps, setRecordFps] = useState<number>(24);
-  const [activeWeather, setActiveWeather] = useState<'thunderstorm' | 'rain' | 'fog' | 'clear'>(
+  const [viewAngle, setViewAngle] = useState<'camera' | 'perspective' | 'top' | 'front'>('camera');
+  const [transformMode, setTransformMode] = useState<'move' | 'rotate' | 'scale'>('move');
+  const [showSafeFrames, setShowSafeFrames] = useState(true);
+  const [isWireframe, setIsWireframe] = useState(false);
+
+  const [internalWeather, setInternalWeather] = useState<'thunderstorm' | 'rain' | 'fog' | 'clear'>(
     config?.weather === 'thunderstorm' || config?.weather === 'rain' || config?.weather === 'fog' || config?.weather === 'clear'
       ? config.weather
       : 'thunderstorm'
   );
-  const [activeCameraMode, setActiveCameraMode] = useState<'dolly_in' | 'crane_sweep' | 'tracking_follow' | 'orbit_reveal' | 'handheld_drift'>(
+  const [internalCameraMode, setInternalCameraMode] = useState<'dolly_in' | 'crane_sweep' | 'tracking_follow' | 'orbit_reveal' | 'handheld_drift'>(
     config?.cameraMovement || 'dolly_in'
   );
-  const [activeTimeOfDay, setActiveTimeOfDay] = useState<'night' | 'dusk' | 'golden_hour'>('night');
-  const [cameraFov, setCameraFov] = useState(35);
+  const [internalTimeOfDay, setInternalTimeOfDay] = useState<'night' | 'dusk' | 'golden_hour'>('night');
+  const [internalCameraFov, setInternalCameraFov] = useState(35);
+
+  const activeWeather = weatherOverride || internalWeather;
+  const activeCameraMode = cameraModeOverride || internalCameraMode;
+  const activeTimeOfDay = timeOfDayOverride || internalTimeOfDay;
+  const cameraFov = cameraFovOverride !== undefined ? cameraFovOverride : internalCameraFov;
   const [elapsedTime, setElapsedTime] = useState(0);
 
   // References to three objects for runtime controls
@@ -391,36 +419,54 @@ export const Procedural3DStudio: React.FC<Props> = ({
       }
 
       // Camera Movement Trajectories
+      // Update key light intensity if overridden
+      if (keyLightRef.current && keyLightIntensityOverride) {
+        keyLightRef.current.intensity = keyLightIntensityOverride;
+      }
+
+      // Camera Movement Trajectories
       if (cameraRef.current) {
         _camTarget.set(0, 2.2, 0);
 
-        if (activeCameraMode === 'dolly_in') {
-          // Slow cinematic push-in
-          const t = (Math.sin(time * 0.3) + 1) * 0.5;
-          const zPos = THREE.MathUtils.lerp(18, 5.5, t);
-          _desiredPos.set(Math.sin(time * 0.1) * 1.2, 2.5 + Math.cos(time * 0.15) * 0.4, zPos);
-        } else if (activeCameraMode === 'crane_sweep') {
-          // Majestic high altitude crane down
-          const t = (Math.sin(time * 0.25) + 1) * 0.5;
-          _desiredPos.set(Math.cos(time * 0.2) * 8, THREE.MathUtils.lerp(14, 2.8, t), Math.sin(time * 0.2) * 12 + 10);
-        } else if (activeCameraMode === 'tracking_follow') {
-          // Low angle ground tracking
-          _desiredPos.set(0.8, 1.2, 6.5 + Math.sin(time * 0.4) * 1.5);
-        } else if (activeCameraMode === 'orbit_reveal') {
-          // 360 degree slow orbit around the character
-          const radius = 10;
-          _desiredPos.set(Math.sin(time * 0.35) * radius, 3.2, Math.cos(time * 0.35) * radius);
+        if (viewAngle === 'top') {
+          cameraRef.current.position.set(0, 32, 0.1);
+          cameraRef.current.lookAt(0, 0, 0);
+        } else if (viewAngle === 'front') {
+          cameraRef.current.position.set(0, 2.5, 12);
+          cameraRef.current.lookAt(0, 2.0, 0);
+        } else if (viewAngle === 'perspective') {
+          cameraRef.current.position.set(12, 7, 14);
+          cameraRef.current.lookAt(0, 2.0, 0);
         } else {
-          // Organic handheld drift
-          _desiredPos.set(
-            Math.sin(time * 0.8) * 0.5,
-            2.6 + Math.cos(time * 0.6) * 0.2,
-            8.0 + Math.sin(time * 0.3) * 0.4
-          );
-        }
+          // Director Camera Trajectory
+          if (activeCameraMode === 'dolly_in') {
+            // Slow cinematic push-in
+            const t = (Math.sin(time * 0.3) + 1) * 0.5;
+            const zPos = THREE.MathUtils.lerp(18, 5.5, t);
+            _desiredPos.set(Math.sin(time * 0.1) * 1.2, 2.5 + Math.cos(time * 0.15) * 0.4, zPos);
+          } else if (activeCameraMode === 'crane_sweep') {
+            // Majestic high altitude crane down
+            const t = (Math.sin(time * 0.25) + 1) * 0.5;
+            _desiredPos.set(Math.cos(time * 0.2) * 8, THREE.MathUtils.lerp(14, 2.8, t), Math.sin(time * 0.2) * 12 + 10);
+          } else if (activeCameraMode === 'tracking_follow') {
+            // Low angle ground tracking
+            _desiredPos.set(0.8, 1.2, 6.5 + Math.sin(time * 0.4) * 1.5);
+          } else if (activeCameraMode === 'orbit_reveal') {
+            // 360 degree slow orbit around the character
+            const radius = 10;
+            _desiredPos.set(Math.sin(time * 0.35) * radius, 3.2, Math.cos(time * 0.35) * radius);
+          } else {
+            // Organic handheld drift
+            _desiredPos.set(
+              Math.sin(time * 0.8) * 0.5,
+              2.6 + Math.cos(time * 0.6) * 0.2,
+              8.0 + Math.sin(time * 0.3) * 0.4
+            );
+          }
 
-        cameraRef.current.position.copy(_desiredPos);
-        cameraRef.current.lookAt(_camTarget);
+          cameraRef.current.position.copy(_desiredPos);
+          cameraRef.current.lookAt(_camTarget);
+        }
       }
 
       renderer.render(scene, camera);
@@ -519,16 +565,67 @@ export const Procedural3DStudio: React.FC<Props> = ({
 
   return (
     <div className="relative w-full h-[620px] rounded-2xl overflow-hidden glass-panel border border-sky-900/30 shadow-2xl flex flex-col bg-[#05070d]">
-      {/* Top Spec Bar */}
-      <div className="absolute top-4 left-5 right-5 z-20 flex items-center justify-between pointer-events-none">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/60 backdrop-blur-md border border-sky-500/30 text-xs font-mono-code text-sky-300 pointer-events-auto">
-            <Video className="w-3.5 h-3.5 text-sky-400" />
-            <span>3D WEBGL ENGINE • REALTIME</span>
+      {/* 2.39:1 CinemaScope Safe Frame Overlay */}
+      {showSafeFrames && (
+        <div className="absolute inset-0 pointer-events-none z-10 flex flex-col justify-between">
+          <div className="h-10 bg-black/60 border-b border-white/10" />
+          <div className="flex-1 flex justify-between px-12 border-x border-white/10 opacity-30">
+            <div className="w-px h-full border-r border-dashed border-sky-400" />
+            <div className="w-px h-full border-r border-dashed border-sky-400" />
           </div>
-          <span className="text-xs text-slate-300 font-semibold bg-black/50 px-2.5 py-1 rounded backdrop-blur">
-            {sceneTitle}
-          </span>
+          <div className="h-10 bg-black/60 border-t border-white/10 flex items-center justify-between px-4 text-[9px] font-mono-code text-slate-500">
+            <span>2.39:1 CINEMASCOPE SAFE AREA</span>
+            <span>ASPECT 16:9 • CFR 24.000 FPS</span>
+          </div>
+        </div>
+      )}
+
+      {/* Top Spec & Viewport Toolbar */}
+      <div className="absolute top-4 left-5 right-5 z-20 flex items-center justify-between pointer-events-none">
+        <div className="flex items-center gap-2 pointer-events-auto">
+          {/* View Angle Mode */}
+          <div className="flex bg-black/70 backdrop-blur-md p-1 rounded-lg border border-slate-800 text-[10px] font-mono-code">
+            {(['camera', 'perspective', 'top', 'front'] as const).map((angle) => (
+              <button
+                key={angle}
+                onClick={() => setViewAngle(angle)}
+                className={`px-2 py-1 rounded capitalize transition-all ${
+                  viewAngle === angle
+                    ? 'bg-sky-500 text-white font-bold'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                {angle === 'camera' ? '🎥 Director Cam' : angle}
+              </button>
+            ))}
+          </div>
+
+          {/* Transform Gizmo Selector */}
+          <div className="flex bg-black/70 backdrop-blur-md p-1 rounded-lg border border-slate-800 text-[10px] font-mono-code">
+            {(['move', 'rotate', 'scale'] as const).map((m) => (
+              <button
+                key={m}
+                onClick={() => setTransformMode(m)}
+                className={`px-2 py-1 rounded uppercase transition-all ${
+                  transformMode === m
+                    ? 'bg-amber-500 text-black font-bold'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+                title={`Transform Tool [${m[0].toUpperCase()}]`}
+              >
+                {m[0].toUpperCase()} ({m === 'move' ? 'G' : m === 'rotate' ? 'R' : 'S'})
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={() => setShowSafeFrames(!showSafeFrames)}
+            className={`px-2 py-1 rounded bg-black/70 backdrop-blur-md border text-[10px] font-mono-code ${
+              showSafeFrames ? 'border-sky-500/50 text-sky-300' : 'border-slate-800 text-slate-500'
+            }`}
+          >
+            Safe Frame
+          </button>
         </div>
 
         <div className="flex items-center gap-2 pointer-events-auto">
@@ -624,7 +721,7 @@ export const Procedural3DStudio: React.FC<Props> = ({
                 {(['dolly_in', 'crane_sweep', 'tracking_follow', 'orbit_reveal'] as const).map((mode) => (
                   <button
                     key={mode}
-                    onClick={() => setActiveCameraMode(mode)}
+                    onClick={() => setInternalCameraMode(mode)}
                     className={`px-2.5 py-1 rounded text-[11px] transition-all capitalize ${
                       activeCameraMode === mode
                         ? 'bg-sky-500 text-white font-semibold shadow'
@@ -644,7 +741,7 @@ export const Procedural3DStudio: React.FC<Props> = ({
                 {(['thunderstorm', 'rain', 'fog', 'clear'] as const).map((w) => (
                   <button
                     key={w}
-                    onClick={() => setActiveWeather(w)}
+                    onClick={() => setInternalWeather(w)}
                     className={`px-2.5 py-1 rounded text-[11px] transition-all capitalize flex items-center gap-1 ${
                       activeWeather === w
                         ? 'bg-indigo-600 text-white font-semibold shadow'
@@ -666,7 +763,7 @@ export const Procedural3DStudio: React.FC<Props> = ({
                 {(['night', 'golden_hour'] as const).map((tod) => (
                   <button
                     key={tod}
-                    onClick={() => setActiveTimeOfDay(tod)}
+                    onClick={() => setInternalTimeOfDay(tod)}
                     className={`px-2.5 py-1 rounded text-[11px] transition-all capitalize ${
                       activeTimeOfDay === tod
                         ? 'bg-amber-600 text-white font-semibold'
@@ -684,7 +781,7 @@ export const Procedural3DStudio: React.FC<Props> = ({
               <span className="text-slate-400 font-medium text-[11px]">LENS:</span>
               <select
                 value={cameraFov}
-                onChange={(e) => setCameraFov(Number(e.target.value))}
+                onChange={(e) => setInternalCameraFov(Number(e.target.value))}
                 className="bg-black/60 border border-slate-700 rounded px-2 py-1 text-slate-200 text-xs focus:outline-none focus:border-sky-500"
               >
                 <option value={24}>24mm Ultra Wide</option>

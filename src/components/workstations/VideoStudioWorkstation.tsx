@@ -77,6 +77,7 @@ export const VideoStudioWorkstation: React.FC<Props> = ({
       storyboard: updatedStoryboard,
     };
     onUpdateProject?.(updated);
+    setViewMode('rendered_video');
   };
 
   const handleTriggerServerRender = async () => {
@@ -105,6 +106,7 @@ export const VideoStudioWorkstation: React.FC<Props> = ({
               const pData = await pRes.json();
               if (pData.success && pData.project) {
                 onUpdateProject?.(pData.project);
+                setViewMode('rendered_video');
               }
             } else if (pollData.job.status === 'FAILED') {
               clearInterval(poll);

@@ -10,11 +10,15 @@ import type { IStorageDriver } from './storageDriver.js';
 export class LocalStorageDriver implements IStorageDriver {
   private baseDir: string;
 
-  constructor(baseDirName = 'storage') {
+  constructor(baseDirName = 'assets') {
     this.baseDir = path.resolve(process.cwd(), 'data', baseDirName);
     if (!fs.existsSync(this.baseDir)) {
       fs.mkdirSync(this.baseDir, { recursive: true });
     }
+  }
+
+  public getFullPath(key: string): string {
+    return this.resolveSafePath(key);
   }
 
   private resolveSafePath(key: string): string {

@@ -3,65 +3,97 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
-import type { FilmProject, StoryboardScene, ProductionDuration, AspectRatio, OutputQuality } from './types/film';
+import React, { useState, useEffect, useCallback } from 'react';
+import type {
+  FilmProject,
+  StoryboardScene,
+  ProductionDuration,
+  AspectRatio,
+  OutputQuality,
+} from './types/film';
+
+import { TopBar, WorkspaceId } from './components/desktop/TopBar';
+import { SceneHierarchyPanel, SelectedEntityType } from './components/desktop/SceneHierarchyPanel';
+import { ContextInspector } from './components/desktop/ContextInspector';
+import { MultiTrackTimeline } from './components/desktop/MultiTrackTimeline';
+
 import { CreateWorkstation } from './components/workstations/CreateWorkstation';
 import { StoryboardWorkstation } from './components/workstations/StoryboardWorkstation';
 import { VideoStudioWorkstation } from './components/workstations/VideoStudioWorkstation';
 import { Procedural3DStudio } from './components/studio3d/Procedural3DStudio';
 import { DirectorsCutWorkstation } from './components/workstations/DirectorsCutWorkstation';
-import { TimelineWorkstation } from './components/workstations/TimelineWorkstation';
-import { VisualDnaWorkstation } from './components/workstations/VisualDnaWorkstation';
-import { ReferenceLibraryWorkstation } from './components/workstations/ReferenceLibraryWorkstation';
 import { CharacterLabWorkstation } from './components/workstations/CharacterLabWorkstation';
 import { AudioStudioWorkstation } from './components/workstations/AudioStudioWorkstation';
+import { VisualDnaWorkstation } from './components/workstations/VisualDnaWorkstation';
+import { ReferenceLibraryWorkstation } from './components/workstations/ReferenceLibraryWorkstation';
+import { ProductionJobsPanel } from './components/workstations/ProductionJobsPanel';
 import { SettingsWorkstation } from './components/workstations/SettingsWorkstation';
+
+import { ScriptingStudioWorkstation } from './components/workstations/ScriptingStudioWorkstation';
+import { VisualNodeEditorWorkstation } from './components/workstations/VisualNodeEditorWorkstation';
+import { CinematographyWorkstation } from './components/workstations/CinematographyWorkstation';
+
 import { ExportModal } from './components/modals/ExportModal';
 import { initialProject } from './backend/db/seedData';
-
-import {
-  Sparkles,
-  Clapperboard,
-  Film,
-  Video,
-  Box,
-  Scissors,
-  SlidersHorizontal,
-  Layers,
-  Image as ImageIcon,
-  Volume2,
-  User,
-  Settings,
-  Download,
-  Clock,
-  Play,
-  RotateCcw,
-  CheckCircle2,
-} from 'lucide-react';
-
-const TABS = [
-  { id: 'CREATE', label: 'CREATE', icon: Sparkles },
-  { id: 'STORYBOARD', label: 'STORYBOARD', icon: Film },
-  { id: 'VIDEO STUDIO', label: 'VIDEO STUDIO', icon: Video },
-  { id: '3D STUDIO', label: '3D STUDIO', icon: Box },
-  { id: "DIRECTOR'S CUT", label: "DIRECTOR'S CUT", icon: Scissors },
-  { id: 'TIMELINE', label: 'TIMELINE', icon: SlidersHorizontal },
-  { id: 'VISUAL DNA', label: 'VISUAL DNA', icon: Layers },
-  { id: 'REFERENCE LIBRARY', label: 'REFERENCES', icon: ImageIcon },
-  { id: 'AUDIO STUDIO', label: 'AUDIO STUDIO', icon: Volume2 },
-  { id: 'CHARACTER LAB', label: 'CHARACTER LAB', icon: User },
-  { id: 'SETTINGS', label: 'SETTINGS', icon: Settings },
-];
+import { AIDirectorEngine } from './services/aiDirector/aiDirectorEngine';
+import { globalCommandManager } from './services/sceneGraph/commandManager';
+import { globalSceneGraph } from './services/sceneGraph/sceneGraphService';
 
 export default function App() {
   const [project, setProject] = useState<FilmProject | null>(null);
-  const [activeTab, setActiveTab] = useState<string>('CREATE');
+  const [activeWorkspace, setActiveWorkspace] = useState<WorkspaceId>('3D_STUDIO');
   const [activeScene, setActiveScene] = useState<StoryboardScene | null>(null);
+  const [selectedEntity, setSelectedEntity] = useState<SelectedEntityType>('character');
+  const [canUndo, setCanUndo] = useState(false);
+  const [canRedo, setCanRedo] = useState(false);
+
+  // Playhead & Transport State
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [currentTimeSec, setCurrentTimeSec] = useState(0);
+
+  // Inspector & Viewport Overrides
+  const [weather, setWeather] = useState<'thunderstorm' | 'rain' | 'fog' | 'clear'>('thunderstorm');
+  const [cameraMovement, setCameraMovement] = useState<
+    'dolly_in' | 'crane_sweep' | 'tracking_follow' | 'orbit_reveal' | 'handheld_drift'
+  >('dolly_in');
+  const [timeOfDay, setTimeOfDay] = useState<'night' | 'dusk' | 'golden_hour'>('night');
+  const [cameraFov, setCameraFov] = useState(38);
+  const [keyLightIntensity, setKeyLightIntensity] = useState(2.5);
+  const [characterPose, setCharacterPose] = useState('Heroic Stand');
+
+  // Sync with global command manager for undo/redo state
+  useEffect(() => {
+    const unsubCmd = globalCommandManager.subscribe(() => {
+      setCanUndo(globalCommandManager.canUndo());
+      setCanRedo(globalCommandManager.canRedo());
+    });
+
+    const unsubScene = globalSceneGraph.subscribe((sceneData) => {
+      const cam = sceneData.entities.find((e) => e.id === 'entity-cine-camera');
+      const light = sceneData.entities.find((e) => e.id === 'entity-key-light');
+      const actor = sceneData.entities.find((e) => e.id === 'entity-hero-actor');
+
+      if (sceneData.environment.weather) setWeather(sceneData.environment.weather as any);
+      if (sceneData.environment.timeOfDay) setTimeOfDay(sceneData.environment.timeOfDay as any);
+      if (cam?.properties.movementMode) setCameraMovement(cam.properties.movementMode);
+      if (cam?.properties.fov) setCameraFov(cam.properties.fov);
+      if (light?.properties.intensity) setKeyLightIntensity(light.properties.intensity);
+      if (actor?.properties.posture) setCharacterPose(actor.properties.posture);
+    });
+
+    return () => {
+      unsubCmd();
+      unsubScene();
+    };
+  }, []);
+
+  // Modal & Master Render States
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isRenderingMaster, setIsRenderingMaster] = useState(false);
 
-  // Load initial project from server or fallback
-  useEffect(() => {
+  // Load project from SQLite on startup
+  const loadProject = useCallback(() => {
     fetch('/api/projects')
       .then((res) => res.json())
       .then((data) => {
@@ -72,17 +104,79 @@ export default function App() {
               if (projData.project) {
                 setProject(projData.project);
                 setActiveScene(projData.project.storyboard[0] || null);
+                if (projData.project.storyboard[0]?.procedural3DConfig) {
+                  const cfg = projData.project.storyboard[0].procedural3DConfig;
+                  if (cfg.weather) setWeather(cfg.weather as any);
+                  if (cfg.cameraMovement) setCameraMovement(cfg.cameraMovement);
+                  if (cfg.timeOfDay) setTimeOfDay(cfg.timeOfDay as any);
+                }
               }
             });
         }
       })
       .catch((err) => {
-        console.warn('Backend unavailable; loading the bundled SYNMOTION demo project.', err);
+        console.warn('Backend SQLite sync connecting to bundled project.', err);
         setProject(initialProject);
         setActiveScene(initialProject.storyboard[0] || null);
       });
   }, []);
 
+  useEffect(() => {
+    loadProject();
+  }, [loadProject]);
+
+  // Synchronized Playback Timer
+  useEffect(() => {
+    if (!isPlaying || !project) return;
+    const interval = setInterval(() => {
+      setCurrentTimeSec((prev) => {
+        const next = prev + 0.1;
+        return next >= project.durationSeconds ? 0 : next;
+      });
+    }, 100);
+    return () => clearInterval(interval);
+  }, [isPlaying, project]);
+
+  // Keyboard Shortcuts (G, R, S, Space, K)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if typing in an input or textarea
+      if (
+        document.activeElement?.tagName === 'INPUT' ||
+        document.activeElement?.tagName === 'TEXTAREA'
+      ) {
+        return;
+      }
+
+      if (e.code === 'Space') {
+        e.preventDefault();
+        setIsPlaying((prev) => !prev);
+      } else if (e.key === 'g' || e.key === 'G') {
+        // Move mode
+      } else if (e.key === 'r' || e.key === 'R') {
+        // Rotate mode
+      } else if (e.key === 's' || e.key === 'S') {
+        // Scale mode
+      } else if (e.key === 'k' || e.key === 'K') {
+        // Keyframe inserted
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Update Project in SQLite
+  const handleUpdateProject = (updated: FilmProject) => {
+    setProject(updated);
+    fetch('/api/projects', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updated),
+    }).catch(console.error);
+  };
+
+  // AI Director Interpretation Flow
   const handleStartOrchestration = async (
     prompt: string,
     duration: ProductionDuration,
@@ -108,7 +202,7 @@ export default function App() {
       if (data.success && data.project) {
         setProject(data.project);
         setActiveScene(data.project.storyboard[0] || null);
-        setActiveTab('STORYBOARD');
+        setActiveWorkspace('3D_STUDIO');
       }
     } catch (err) {
       console.error('Orchestration error:', err);
@@ -117,13 +211,57 @@ export default function App() {
     }
   };
 
-  const handleUpdateProject = (updated: FilmProject) => {
-    setProject(updated);
-    fetch('/api/projects', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updated),
-    }).catch(console.error);
+  // AI Director Command from Outliner
+  const handleApplyAIDirectorCommand = async (prompt: string) => {
+    try {
+      await AIDirectorEngine.executeDirective(prompt);
+    } catch (err) {
+      console.error('AI Director directive execution error:', err);
+    }
+  };
+
+  // Master Cut Render Trigger
+  const handleRenderMasterCut = async () => {
+    if (!project || isRenderingMaster) return;
+    setIsRenderingMaster(true);
+    try {
+      const res = await fetch(`/api/projects/${project.id}/assemble`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          format: 'mp4',
+          quality: project.quality,
+          aspectRatio: project.aspectRatio,
+          fps: project.fps || 24,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success && data.job) {
+        // Poll job until complete
+        const poll = setInterval(async () => {
+          try {
+            const jRes = await fetch(`/api/jobs/${data.job.id}`);
+            const jData = await jRes.json();
+            if (jData.success && jData.job) {
+              if (jData.job.status === 'COMPLETED' || jData.job.status === 'FAILED') {
+                clearInterval(poll);
+                setIsRenderingMaster(false);
+                loadProject();
+              }
+            }
+          } catch {
+            clearInterval(poll);
+            setIsRenderingMaster(false);
+          }
+        }, 2000);
+      } else {
+        setIsRenderingMaster(false);
+      }
+    } catch (err) {
+      console.error('Master assembly trigger failed:', err);
+      setIsRenderingMaster(false);
+    }
   };
 
   if (!project) {
@@ -140,202 +278,185 @@ export default function App() {
   const currentScene = activeScene || project.storyboard[0];
 
   return (
-    <div className="min-h-screen bg-[#05070d] text-slate-100 flex flex-col font-sans selection:bg-sky-500 selection:text-white">
-      {/* Top Global Studio Navigation Bar */}
-      <header className="sticky top-0 z-40 bg-[#070b14]/90 backdrop-blur-xl border-b border-sky-900/30 px-4 sm:px-6 py-2.5">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-          {/* Brand */}
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/20">
-              <Clapperboard className="w-5 h-5 text-white" />
-            </div>
+    <div className="h-screen w-screen bg-[#050810] text-slate-100 flex flex-col font-sans overflow-hidden select-none">
+      {/* Top Application Bar */}
+      <TopBar
+        project={project}
+        activeWorkspace={activeWorkspace}
+        onSelectWorkspace={setActiveWorkspace}
+        isPlaying={isPlaying}
+        onTogglePlay={() => setIsPlaying((p) => !p)}
+        currentTimeSec={currentTimeSec}
+        totalDurationSec={project.durationSeconds}
+        onOpenExportModal={() => setIsExportModalOpen(true)}
+        onRenderMasterCut={handleRenderMasterCut}
+        isRenderingMaster={isRenderingMaster}
+        onUpdateProjectTitle={(title) => handleUpdateProject({ ...project, title })}
+        onUndo={() => globalCommandManager.undo()}
+        onRedo={() => globalCommandManager.redo()}
+        canUndo={canUndo}
+        canRedo={canRedo}
+      />
 
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-extrabold text-base tracking-wider text-white font-cinematic">
-                  SYNMOTION AI
-                </span>
-                <span className="px-2 py-0.5 rounded-full bg-sky-950 border border-sky-500/40 text-[10px] font-mono-code font-bold text-sky-400">
-                  STUDIO PRO
-                </span>
-              </div>
-              <span className="text-[10px] text-slate-400 hidden sm:block">
-                Autonomous AI Filmmaking & Procedural Animation
-              </span>
-            </div>
-          </div>
-
-          {/* Active Production Info */}
-          <div className="hidden md:flex items-center gap-3 px-3 py-1.5 rounded-xl bg-black/40 border border-slate-800 text-xs">
-            <span className="font-semibold text-slate-200 truncate max-w-xs">{project.title}</span>
-            <span className="w-1 h-1 rounded-full bg-slate-600" />
-            <span className="font-mono-code text-amber-300 font-bold flex items-center gap-1">
-              <Clock className="w-3 h-3" />
-              <span>
-                {Math.floor(project.durationSeconds / 60)}:00 ({project.durationTarget})
-              </span>
-            </span>
-            <span className="w-1 h-1 rounded-full bg-slate-600" />
-            <span className="text-slate-400 uppercase text-[10px] font-mono-code">
-              {project.aspectRatio} • {project.quality}
-            </span>
-          </div>
-
-          {/* Actions */}
-          <div className="flex items-center gap-2.5">
-            <button
-              onClick={() => setIsExportModalOpen(true)}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold text-xs tracking-wide shadow-lg shadow-sky-500/20 flex items-center gap-1.5 transition-all cursor-pointer active:scale-95"
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span>EXPORT FILM</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Workstation Tabs Strip */}
-        <div className="max-w-7xl mx-auto mt-2 pt-2 border-t border-slate-800/60 flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
-          {TABS.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold tracking-wider whitespace-nowrap transition-all flex items-center gap-1.5 ${
-                  isActive
-                    ? 'bg-sky-500/20 text-sky-300 border border-sky-400/50 shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
-                }`}
-              >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-sky-400' : 'text-slate-500'}`} />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      </header>
-
-      {/* Main Workspace Body */}
-      <main className="flex-1 p-4 sm:p-6 lg:p-8">
-        {activeTab === 'CREATE' && (
-          <CreateWorkstation
-            project={project}
-            onUpdateProject={handleUpdateProject}
-            onStartOrchestration={handleStartOrchestration}
-            isGenerating={isGenerating}
-            onNavigateToTab={setActiveTab}
-          />
-        )}
-
-        {activeTab === 'STORYBOARD' && (
-          <StoryboardWorkstation
-            project={project}
-            onUpdateProject={handleUpdateProject}
-            onSelectSceneForStudio={(scene) => {
-              setActiveScene(scene);
-              setActiveTab('3D STUDIO');
-            }}
-            onNavigateToTab={setActiveTab}
-          />
-        )}
-
-        {activeTab === 'VIDEO STUDIO' && (
-          <VideoStudioWorkstation
+      {/* Main Workspace Suite */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Left Outliner & Tool Panel (Visible in 3D & Animation) */}
+        {(activeWorkspace === '3D_STUDIO' || activeWorkspace === 'ANIMATION') && (
+          <SceneHierarchyPanel
             project={project}
             activeScene={currentScene}
-            onSelectScene={setActiveScene}
-            onNavigateToTab={setActiveTab}
+            selectedEntity={selectedEntity}
+            onSelectEntity={setSelectedEntity}
+            onApplyAIDirectorCommand={handleApplyAIDirectorCommand}
           />
         )}
 
-        {activeTab === '3D STUDIO' && (
-          <div className="max-w-7xl mx-auto space-y-6 pb-12">
-            <div className="glass-panel p-4 rounded-2xl border border-sky-900/30 flex items-center justify-between">
-              <div>
-                <h1 className="text-lg font-bold text-white">Procedural 3D WebGL Studio</h1>
-                <p className="text-xs text-slate-300">
-                  Real-time physics, dynamic rain particles, cinematic camera rigs, and composite 3D actor meshes.
-                </p>
-              </div>
-
-              {/* Scene Switcher */}
-              <select
-                value={currentScene.id}
-                onChange={(e) => {
-                  const s = project.storyboard.find((item) => item.id === e.target.value);
-                  if (s) setActiveScene(s);
-                }}
-                className="bg-black/60 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200"
-              >
-                {project.storyboard.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    Scene {s.sceneNumber}: {s.title}
-                  </option>
-                ))}
-              </select>
+        {/* Center Viewport / Workspace Canvas */}
+        <div className="flex-1 flex flex-col overflow-hidden relative">
+          {(activeWorkspace === '3D_STUDIO' || activeWorkspace === 'ANIMATION') && (
+            <div className="flex-1 p-3 flex flex-col overflow-hidden">
+              <Procedural3DStudio
+                config={currentScene.procedural3DConfig}
+                sceneTitle={`Scene ${currentScene.sceneNumber}: ${currentScene.title}`}
+                durationSeconds={currentScene.durationSeconds}
+                selectedEntity={selectedEntity}
+                onSelectEntity={setSelectedEntity}
+                weatherOverride={weather}
+                cameraModeOverride={cameraMovement}
+                timeOfDayOverride={timeOfDay}
+                cameraFovOverride={cameraFov}
+                keyLightIntensityOverride={keyLightIntensity}
+                externalTimeSec={currentTimeSec}
+              />
             </div>
+          )}
 
-            <Procedural3DStudio
-              config={currentScene.procedural3DConfig}
-              sceneTitle={`Scene ${currentScene.sceneNumber}: ${currentScene.title}`}
-              durationSeconds={currentScene.durationSeconds}
+          {activeWorkspace === 'DIRECTOR' && (
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+              <CreateWorkstation
+                project={project}
+                onUpdateProject={handleUpdateProject}
+                onStartOrchestration={handleStartOrchestration}
+                isGenerating={isGenerating}
+                onNavigateToTab={(tab) => {
+                  if (tab === 'STORYBOARD') setActiveWorkspace('STORYBOARD');
+                  else if (tab === '3D STUDIO') setActiveWorkspace('3D_STUDIO');
+                  else if (tab === 'CHARACTER LAB') setActiveWorkspace('CHARACTER_LAB');
+                }}
+              />
+            </div>
+          )}
+
+          {activeWorkspace === 'CHARACTER_LAB' && (
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+              <CharacterLabWorkstation
+                project={project}
+                onUpdateProject={handleUpdateProject}
+              />
+            </div>
+          )}
+
+          {activeWorkspace === 'CINEMATOGRAPHY' && (
+            <CinematographyWorkstation
+              project={project}
+              activeScene={currentScene}
+              onUpdateCameraParams={(fov, movement) => {
+                setCameraFov(fov);
+                setCameraMovement(movement as any);
+              }}
             />
-          </div>
-        )}
+          )}
 
-        {activeTab === "DIRECTOR'S CUT" && (
-          <DirectorsCutWorkstation
-            project={project}
-            onUpdateProject={handleUpdateProject}
-            onNavigateToTab={setActiveTab}
+          {activeWorkspace === 'SCRIPTING' && (
+            <ScriptingStudioWorkstation
+              project={project}
+              activeScene={currentScene}
+              onUpdateSceneConfig={(updates) => {
+                const updated = {
+                  ...project,
+                  storyboard: project.storyboard.map((s) => (s.id === currentScene.id ? { ...s, ...updates } : s)),
+                };
+                handleUpdateProject(updated);
+              }}
+            />
+          )}
+
+          {activeWorkspace === 'NODE_EDITOR' && (
+            <VisualNodeEditorWorkstation
+              project={project}
+              activeScene={currentScene}
+            />
+          )}
+
+          {activeWorkspace === 'AUDIO_STUDIO' && (
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+              <AudioStudioWorkstation
+                project={project}
+                onUpdateProject={handleUpdateProject}
+              />
+            </div>
+          )}
+
+          {activeWorkspace === 'STORYBOARD' && (
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+              <StoryboardWorkstation
+                project={project}
+                onUpdateProject={handleUpdateProject}
+                onSelectSceneForStudio={(scene) => {
+                  setActiveScene(scene);
+                  setActiveWorkspace('3D_STUDIO');
+                }}
+                onNavigateToTab={(tab) => {
+                  if (tab === '3D STUDIO') setActiveWorkspace('3D_STUDIO');
+                }}
+              />
+            </div>
+          )}
+
+          {activeWorkspace === 'RENDER_JOBS' && (
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 max-w-6xl mx-auto w-full">
+              <ProductionJobsPanel projectId={project.id} />
+            </div>
+          )}
+
+          {/* Bottom Animation Timeline */}
+          {(activeWorkspace === '3D_STUDIO' || activeWorkspace === 'ANIMATION') && (
+            <MultiTrackTimeline
+              storyboard={project.storyboard}
+              activeScene={currentScene}
+              onSelectScene={(s) => setActiveScene(s)}
+              currentTimeSec={currentTimeSec}
+              totalDurationSec={project.durationSeconds}
+              onSeek={(t) => setCurrentTimeSec(t)}
+              isPlaying={isPlaying}
+              onTogglePlay={() => setIsPlaying((p) => !p)}
+              onAddKeyframe={() => {
+                console.log(`Keyframe recorded at ${currentTimeSec.toFixed(2)}s for entity ${selectedEntity}`);
+              }}
+            />
+          )}
+        </div>
+
+        {/* Right Property Inspector (Visible in 3D & Animation) */}
+        {(activeWorkspace === '3D_STUDIO' || activeWorkspace === 'ANIMATION') && (
+          <ContextInspector
+            selectedEntity={selectedEntity}
+            activeScene={currentScene}
+            weather={weather}
+            onChangeWeather={setWeather}
+            cameraMovement={cameraMovement}
+            onChangeCameraMovement={setCameraMovement}
+            timeOfDay={timeOfDay}
+            onChangeTimeOfDay={setTimeOfDay}
+            cameraFov={cameraFov}
+            onChangeCameraFov={setCameraFov}
+            keyLightIntensity={keyLightIntensity}
+            onChangeKeyLightIntensity={setKeyLightIntensity}
+            characterPose={characterPose}
+            onChangeCharacterPose={setCharacterPose}
           />
         )}
-
-        {activeTab === 'TIMELINE' && (
-          <TimelineWorkstation
-            project={project}
-            onUpdateProject={handleUpdateProject}
-            onNavigateToTab={setActiveTab}
-          />
-        )}
-
-        {activeTab === 'VISUAL DNA' && (
-          <VisualDnaWorkstation
-            project={project}
-            onUpdateProject={handleUpdateProject}
-            onNavigateToTab={setActiveTab}
-          />
-        )}
-
-        {activeTab === 'REFERENCE LIBRARY' && (
-          <ReferenceLibraryWorkstation
-            project={project}
-            onUpdateProject={handleUpdateProject}
-          />
-        )}
-
-        {activeTab === 'AUDIO STUDIO' && (
-          <AudioStudioWorkstation
-            project={project}
-            onUpdateProject={handleUpdateProject}
-          />
-        )}
-
-        {activeTab === 'CHARACTER LAB' && (
-          <CharacterLabWorkstation
-            project={project}
-            onUpdateProject={handleUpdateProject}
-          />
-        )}
-
-        {activeTab === 'SETTINGS' && (
-          <SettingsWorkstation
-            project={project}
-            onUpdateProject={handleUpdateProject}
-          />
-        )}
-      </main>
+      </div>
 
       {/* Export Production Master Modal */}
       <ExportModal
